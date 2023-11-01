@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import appConfig from './config/app.config';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -10,8 +9,13 @@ import appConfig from './config/app.config';
       isGlobal: true,
       load: [appConfig],
     }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: { target: 'pino-pretty' },
+      },
+    }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
