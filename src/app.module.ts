@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import appConfig from './config/app.config';
 import { LoggerModule } from 'nestjs-pino';
+import { AuthModule } from './auth/auth.module';
+import { UsersService } from './users/users.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -14,8 +17,10 @@ import { LoggerModule } from 'nestjs-pino';
         transport: { target: 'pino-pretty' },
       },
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [UsersService],
 })
 export class AppModule {}
