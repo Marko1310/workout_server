@@ -1,5 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { z } from 'zod';
+import { User } from 'src/users/user.entity';
 
 const dbSchema = z.object({
   type: z.string(),
@@ -19,5 +20,5 @@ export default registerAs('database', () => {
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
   });
-  return config;
+  return { ...config, entities: [User] };
 });

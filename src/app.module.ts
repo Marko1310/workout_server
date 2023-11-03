@@ -8,7 +8,6 @@ import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/user.entity';
 
 @Module({
   imports: [
@@ -37,7 +36,6 @@ import { User } from './users/user.entity';
         return {
           ...config.get('database'),
           synchronize: true,
-          entities: [User],
         };
       },
       inject: [ConfigService],
