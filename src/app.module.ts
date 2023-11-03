@@ -4,7 +4,6 @@ import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
-import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -35,6 +34,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       useFactory: (config: ConfigService) => {
         return {
           ...config.get('database'),
+          //TODO: remove synchronize, add migrations
           synchronize: true,
         };
       },
@@ -45,6 +45,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UsersModule,
   ],
   controllers: [],
-  providers: [UsersService],
+  providers: [],
 })
 export class AppModule {}
