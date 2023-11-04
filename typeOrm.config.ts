@@ -8,8 +8,7 @@ const dataSourceConfig: DataSourceOptions = {
   ...databaseConfig(),
   type: 'postgres',
   entities: [`./src/**/*entity.ts`],
-  migrations: [`./src/**/*migrations.ts`],
-  migrationsTableName: 'migrations_typeorm',
+  migrations: [`./src/**/migrations/*.ts`],
 
   logging: true,
 };
