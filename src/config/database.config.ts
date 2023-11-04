@@ -1,9 +1,8 @@
 import { registerAs } from '@nestjs/config';
 import { z } from 'zod';
-import { User } from 'src/users/user.entity';
 
-const dbSchema = z.object({
-  type: z.string(),
+const databaseSchema = z.object({
+  type: z.string().default('postgres'),
   host: z.string(),
   port: z.coerce.number().default(5432),
   username: z.string().min(1),
@@ -12,13 +11,12 @@ const dbSchema = z.object({
 });
 
 export default registerAs('database', () => {
-  const config = dbSchema.parse({
-    type: process.env.DATABASE_TYPE,
+  const config = databaseSchema.parse({
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
-    username: process.env.DATABASE_USER,
+    username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
   });
-  return { ...config, entities: [User] };
+  return { ...config };
 });

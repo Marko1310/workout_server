@@ -1,23 +1,31 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig from './config/app.config';
-import databaseConfig from './config/database.config';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import databaseConfig from './config/database.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [appConfig, databaseConfig],
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        ...config.get('database'),
+        autoLoadEntities: true,
+      }),
+      inject: [ConfigService],
     }),
     LoggerModule.forRoot({
       pinoHttp: {
         transport: { target: 'pino-pretty' },
       },
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [appConfig, databaseConfig],
     }),
     JwtModule.registerAsync({
       global: true,
@@ -25,17 +33,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         return {
           secret: config.get('app.jwt.secret'),
           signOptions: { expiresIn: '1h', issuer: 'upload-jet' },
-        };
-      },
-      inject: [ConfigService],
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (config: ConfigService) => {
-        return {
-          ...config.get('database'),
-          //TODO: remove synchronize, add migrations
-          synchronize: true,
         };
       },
       inject: [ConfigService],
