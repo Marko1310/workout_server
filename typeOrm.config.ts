@@ -9,7 +9,6 @@ const dataSourceConfig: DataSourceOptions = {
   type: 'postgres',
   entities: [`./src/**/*entity.ts`],
   migrations: [`./src/**/migrations/*.ts`],
-
   logging: true,
 };
 export default new DataSource({ ...dataSourceConfig });
