@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { IdentityModule } from './identity/identity.module';
 import databaseConfig from './config/database.config';
 
 @Module({
@@ -40,6 +41,7 @@ import databaseConfig from './config/database.config';
 
     AuthModule,
     UsersModule,
+    IdentityModule,
   ],
   controllers: [],
   providers: [],
