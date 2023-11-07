@@ -33,7 +33,7 @@ import databaseConfig from './config/database.config';
       useFactory(config: ConfigService) {
         return {
           secret: config.get('app.jwt.secret'),
-          signOptions: { expiresIn: '1h', issuer: 'upload-jet' },
+          signOptions: { expiresIn: '1h', issuer: 'workout' },
         };
       },
       inject: [ConfigService],
