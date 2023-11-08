@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from 'auth/auth.service';
-import { JwtAuthGuard } from 'auth/jwt.auth.guard';
-import { LocalAuthGuard } from 'auth/local-auth.guard';
+import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
+import { LocalAuthGuard } from 'auth/guards/local-auth.guard';
+import { Public } from 'auth/public.decorator';
 
 @Controller()
 export class IdentityController {

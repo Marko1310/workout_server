@@ -15,9 +15,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   private static cookieExtractor(req: Request): string | null {
-    const { access_token } = req.cookies.access_token;
-    if (!access_token) return null;
-    return req.cookies.access_token.access_token;
+    const access_token = req.cookies ? req.cookies.access_token : null;
+    return access_token;
   }
 
   async validate(payload: any) {
