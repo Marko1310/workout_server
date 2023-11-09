@@ -21,19 +21,4 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }
-
-  // async signIn(signInUserDto: SignInUserDto): Promise<ResponseDto> {
-  //   const { name, email, password } = signInUserDto;
-  //   const salt = await bcrypt.genSalt();
-  //   const hashedPassword = await bcrypt.hash(password, salt);
-  //   const newUser = await this.userRepository.create({
-  //     name,
-  //     email,
-  //     password: hashedPassword,
-  //   });
-  //   this.userRepository.save(newUser);
-  //   return {
-  //     success: true,
-  //   };
-  // }
 }
