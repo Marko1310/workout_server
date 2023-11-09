@@ -18,6 +18,15 @@ export class UsersService {
     return this.userRepository.findOneBy({ email });
   }
 
+  async create(name: string, email: string, hashedPassword: string) {
+    const newUser = this.userRepository.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+    return await this.userRepository.save(newUser);
+  }
+
   async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }

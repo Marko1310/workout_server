@@ -21,8 +21,8 @@ export class IdentityController {
   @NoJwtAuth()
   @Post('auth/signup')
   async signup(@Body() signupDto: SignupDto) {
-    const user = await this.authService.signup(signupDto);
-    return user;
+    const identity = await this.authService.upsertUser(signupDto);
+    return identity;
   }
 
   @UseGuards(LocalAuthGuard)

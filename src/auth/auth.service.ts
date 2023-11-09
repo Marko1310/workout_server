@@ -22,22 +22,21 @@ export class AuthService {
     return result;
   }
 
-  async signup(signupDto: SignupDto) {
+  async upsertUser(signupDto: SignupDto) {
     const { name, email, password } = signupDto;
     const existingUser = await this.userService.findOne(email);
-    return existingUser;
-
-    // const salt = await bcrypt.genSalt();
-    // const hashedPassword = await bcrypt.hash(password, salt);
-    // const newUser = await this.userRepository.create({
-    //   name,
-    //   email,
-    //   password: hashedPassword,
-    // });
-    // this.userRepository.save(newUser);
-    // return {
-    //   success: true,
-    // };
+    if (existingUser) {
+      return { existingUser: existingUser };
+    } else {
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password, salt);
+      const newUser = await this.userService.create(
+        name,
+        email,
+        hashedPassword,
+      );
+      return { newUser: newUser };
+    }
   }
 
   async login(user: any) {
