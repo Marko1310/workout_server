@@ -12,7 +12,8 @@ import { IdentityService } from './identity.service';
 import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
 import { LocalAuthGuard } from 'auth/guards/local-auth.guard';
 import { NoJwtAuth } from 'auth/noJwtAuth.decorator';
-import { SignupDto } from 'auth/dto/signup.dto';
+import { SignupDto, SignupDtoSchema } from 'auth/dto/signup.dto';
+import { ZodPipe } from 'shared/zod.pipe';
 
 @Controller('identity')
 export class IdentityController {
@@ -21,10 +22,9 @@ export class IdentityController {
   @NoJwtAuth()
   @Post('signup')
   async signup(
-    @Body() signupDto: SignupDto,
+    @Body(new ZodPipe(SignupDtoSchema)) signupDto: SignupDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    //TODO: zod validation of signupDto
     const access_token = await this.identityService.authorize(signupDto);
     res.cookie('access_token', access_token, { httpOnly: true, secure: false });
   }
