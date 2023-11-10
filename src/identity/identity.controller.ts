@@ -25,7 +25,7 @@ export class IdentityController {
     @Body(new ZodPipe(SignupDtoSchema)) signupDto: SignupDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const access_token = await this.identityService.authorize(signupDto);
+    const access_token = await this.identityService.signup(signupDto);
     res.cookie('access_token', access_token, { httpOnly: true, secure: false });
   }
 

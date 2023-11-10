@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from 'auth/dto/signup.dto';
 import { UsersService } from 'users/users.service';
 import * as bcrypt from 'bcryptjs';
+import { User } from 'users/users.entity';
 
 @Injectable()
 export class IdentityService {
@@ -11,21 +12,25 @@ export class IdentityService {
     private jwtService: JwtService,
   ) {}
 
-  async authorize(signupDto: SignupDto) {
+  async signup(signupDto: SignupDto) {
     const identity = await this.upsertUser(signupDto);
-    //TODO: authorization and permissions
-    const permissions = 'add_permissions';
-    const accessToken = await this.jwtService.signAsync(
-      { permissions },
-      { subject: String(identity.id) },
-    );
+    const accessToken = await this.assignAccessToken(identity);
     return accessToken;
   }
 
-  async login(user: any) {
-    //TODO: create login logic
-    const payload = { id: user.id, email: user.email };
-    return { access_token: await this.jwtService.signAsync(payload) };
+  async login(identity: any) {
+    const accessToken = await this.assignAccessToken(identity);
+    return accessToken;
+  }
+
+  private async assignAccessToken(identity: User) {
+    //TODO: authorization and permissions
+    const permissions = 'assign permissions';
+    const payload = { permissions, subject: String(identity.id) };
+    const accessToken = await this.jwtService.signAsync({
+      payload,
+    });
+    return accessToken;
   }
 
   private async upsertUser(signupDto: SignupDto) {
