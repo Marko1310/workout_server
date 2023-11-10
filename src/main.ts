@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from 'nestjs-pino';
 import * as cookieParser from 'cookie-parser';
+import { ZodExceptionFilter } from 'shared/zod-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -16,6 +17,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useLogger(logger);
+  app.useGlobalFilters(new ZodExceptionFilter());
 
   await app.listen(port, () => {
     logger.log(`🚀 Application is listening on port ${port}`);
