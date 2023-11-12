@@ -27,9 +27,7 @@ export class IdentityService {
     //TODO: authorization and permissions
     const permissions = 'assign permissions';
     const payload = { permissions, subject: String(identity.id) };
-    const accessToken = await this.jwtService.signAsync({
-      payload,
-    });
+    const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;
   }
 
