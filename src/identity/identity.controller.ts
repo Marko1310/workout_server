@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { IdentityService } from './identity.service';
-import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
 import { LocalAuthGuard } from 'auth/guards/local-auth.guard';
 import { NoJwtAuth } from 'auth/noJwtAuth.decorator';
 import { SignupDto, SignupDtoSchema } from 'auth/dto/signup.dto';
@@ -37,7 +36,6 @@ export class IdentityController {
     res.cookie('access_token', accessToken, { httpOnly: true, secure: false });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
