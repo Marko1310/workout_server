@@ -1,8 +1,8 @@
-import { Users } from '../../src/users/users.entity';
+import { Users } from '../../../src/users/users.entity';
 
 import { Entity, Column, ManyToOne } from 'typeorm';
 
-import { BaseEntity } from '../shared/database/base.entity';
+import { BaseEntity } from '../../shared/database/base.entity';
 
 @Entity({ name: 'workout_splits' })
 export class WorkoutSplits extends BaseEntity {

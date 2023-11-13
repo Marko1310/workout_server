@@ -1,4 +1,4 @@
-import { WorkoutSplits } from '../../src/workouts/workout_splits.entity';
+import { WorkoutSplits } from '../../src/workouts/entities/workout_splits.entity';
 
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../shared/database/base.entity';
