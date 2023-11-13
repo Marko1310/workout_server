@@ -1,8 +1,7 @@
-import { Users } from '../../../src/users/users.entity';
-
-import { Entity, Column, ManyToOne } from 'typeorm';
-
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../shared/database/base.entity';
+import { Users } from '../../../src/users/users.entity';
+import { Workouts } from './workouts.entity';
 
 @Entity({ name: 'workout_splits' })
 export class WorkoutSplits extends BaseEntity {
@@ -16,4 +15,7 @@ export class WorkoutSplits extends BaseEntity {
     onDelete: 'CASCADE',
   })
   users: Users;
+
+  @OneToMany(() => Workouts, (workouts: Workouts) => workouts.workoutSplits)
+  workouts: Workouts[];
 }
