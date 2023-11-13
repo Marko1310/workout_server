@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from 'auth/dto/signup.dto';
 import { UsersService } from 'users/users.service';
 import * as bcrypt from 'bcryptjs';
-import { User } from 'users/users.entity';
+import { Users } from 'users/users.entity';
 
 @Injectable()
 export class IdentityService {
@@ -23,7 +23,7 @@ export class IdentityService {
     return accessToken;
   }
 
-  private async assignAccessToken(identity: User) {
+  private async assignAccessToken(identity: Users) {
     //TODO: authorization and permissions
     const permissions = 'assign permissions';
     const payload = { permissions, subject: String(identity.id) };

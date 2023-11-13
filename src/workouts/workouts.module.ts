@@ -6,10 +6,16 @@ import { WorkoutsExercisesService } from './workouts-exercises/workouts-exercise
 import { ExercisesController } from './exercises/exercises.controller';
 import { ExercisesModule } from './exercises/exercises.module';
 import { WorkoutsExercisesModule } from './workouts-exercises/workouts-exercises.module';
+import { WorkoutSplits } from './workout_splits.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   providers: [WorkoutsService, ExercisesService, WorkoutsExercisesService],
   controllers: [WorkoutsController, ExercisesController],
-  imports: [ExercisesModule, WorkoutsExercisesModule],
+  imports: [
+    ExercisesModule,
+    WorkoutsExercisesModule,
+    TypeOrmModule.forFeature([WorkoutSplits]),
+  ],
 })
 export class WorkoutsModule {}

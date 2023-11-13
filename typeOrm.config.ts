@@ -7,7 +7,7 @@ import databaseConfig from './src/config/database.config';
 const dataSourceConfig: DataSourceOptions = {
   ...databaseConfig(),
   type: 'postgres',
-  entities: [`./src/**/*entity.ts`],
+  entities: [`./src/**/*.entity.ts`],
   migrations: [`./src/**/migrations/*.ts`],
   logging: true,
 };
