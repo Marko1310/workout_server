@@ -10,6 +10,7 @@ import { IdentityModule } from './identity/identity.module';
 import databaseConfig from './config/database.config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
+import { WorkoutsModule } from './workouts/workouts.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
     AuthModule,
     UsersModule,
     IdentityModule,
+    WorkoutsModule,
   ],
   controllers: [],
   providers: [
