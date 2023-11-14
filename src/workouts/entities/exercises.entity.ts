@@ -1,5 +1,6 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../shared/database/base.entity';
+import { Tracks } from './tracks.entity';
 
 @Entity({ name: 'exercises' })
 export class Exercises extends BaseEntity {
@@ -11,4 +12,7 @@ export class Exercises extends BaseEntity {
 
   @Column({ nullable: false })
   goal_reps: number;
+
+  @OneToMany(() => Tracks, (tracks: Tracks) => tracks.exercises)
+  tracks: Tracks[];
 }
