@@ -1,15 +1,21 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
+import { WorkoutsService } from './workouts.service';
+import { User } from 'users/user.decorator';
+import { Users } from 'users/users.entity';
 
 @Controller('workouts')
 export class WorkoutsController {
+  constructor(private workoutService: WorkoutsService) {}
+
   @Post('workout-split')
-  async createWorkoutSplit(
-    @Body() addWorkoutSplit: any,
-    @Req() request: Request,
-  ) {
+  async createWorkoutSplit(@Body() addWorkoutSplit: any, @User() user: Users) {
     const { title, days } = addWorkoutSplit;
-    const { id: userId } = request;
-    return { userId, title, days };
+    const { id: UserId } = user;
+    const workoutSplit = await this.workoutService.createWorkoutSplit(
+      UserId,
+      title,
+      days,
+    );
+    return workoutSplit;
   }
 }
