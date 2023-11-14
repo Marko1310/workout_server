@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { BaseEntity } from '../../shared/database/base.entity';
 import { WorkoutSplits } from './workout_splits.entity';
+import { Exercises } from './exercises.entity';
 
 @Entity({ name: 'workouts' })
 export class Workouts extends BaseEntity {
@@ -18,4 +19,8 @@ export class Workouts extends BaseEntity {
     },
   )
   workoutSplits: WorkoutSplits;
+
+  @ManyToMany(() => Exercises)
+  @JoinTable()
+  exercises: Exercises[];
 }
