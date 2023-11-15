@@ -22,11 +22,10 @@ export class WorkoutsService {
     return this.workoutSplits.save(newWorkoutSplit);
   }
 
-  async createWorkouts(workoutSplitId: number, title: string, week: number) {
+  async createWorkouts(workoutSplitId: number, title: string) {
     const newWorkout = this.workouts.create({
       workoutSplits: { id: workoutSplitId },
       workout_name: title,
-      week: week,
     });
     return this.workouts.save(newWorkout);
   }

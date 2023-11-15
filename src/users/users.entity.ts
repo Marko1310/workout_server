@@ -1,6 +1,7 @@
 import { WorkoutSplits } from '../../src/workouts/entities/workout_splits.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../shared/database/base.entity';
+import { Workouts } from '../workouts/entities/workouts.entity';
 
 @Entity({ name: 'users' })
 export class Users extends BaseEntity {
@@ -23,4 +24,7 @@ export class Users extends BaseEntity {
     (workoutSplits: WorkoutSplits) => workoutSplits.users,
   )
   workoutSplits: WorkoutSplits[];
+
+  @OneToMany(() => Workouts, (workouts: Workouts) => workouts.users)
+  workouts: Workouts[];
 }

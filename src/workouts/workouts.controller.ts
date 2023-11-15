@@ -24,11 +24,10 @@ export class WorkoutsController {
 
   @Post('workout')
   async createWorkouts(@Body() addWorkout: any) {
-    const { workoutSplitId, title, week } = addWorkout;
+    const { workoutSplitId, title } = addWorkout;
     const workout = await this.workoutService.createWorkouts(
       workoutSplitId,
       title,
-      week,
     );
     return workout;
   }
