@@ -1,6 +1,7 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../shared/database/base.entity';
 import { Tracks } from './tracks.entity';
+import { Users } from '../../users/users.entity';
 
 @Entity({ name: 'exercises' })
 export class Exercises extends BaseEntity {
@@ -12,6 +13,11 @@ export class Exercises extends BaseEntity {
 
   @Column({ nullable: false })
   goal_reps: number;
+
+  @ManyToOne(() => Users, (users: Users) => users.exercises, {
+    onDelete: 'CASCADE',
+  })
+  users: Users;
 
   @OneToMany(() => Tracks, (tracks: Tracks) => tracks.exercises)
   tracks: Tracks[];
