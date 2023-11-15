@@ -3,6 +3,7 @@ import { WorkoutsService } from './workouts.service';
 import { RequestUser } from 'users/requestUser.decorator';
 import { Users } from 'users/users.entity';
 
+//TODO: implement dto's, remove any, zod validation for each request
 @Controller('workouts')
 export class WorkoutsController {
   constructor(private workoutService: WorkoutsService) {}
@@ -23,9 +24,11 @@ export class WorkoutsController {
   }
 
   @Post('workout')
-  async createWorkouts(@Body() addWorkout: any) {
+  async createWorkouts(@Body() addWorkout: any, @RequestUser() user: Users) {
     const { workoutSplitId, title } = addWorkout;
+    const { id: userId } = user;
     const workout = await this.workoutService.createWorkouts(
+      userId,
       workoutSplitId,
       title,
     );

@@ -22,8 +22,9 @@ export class WorkoutsService {
     return this.workoutSplits.save(newWorkoutSplit);
   }
 
-  async createWorkouts(workoutSplitId: number, title: string) {
+  async createWorkouts(userId: number, workoutSplitId: number, title: string) {
     const newWorkout = this.workouts.create({
+      users: { id: userId },
       workoutSplits: { id: workoutSplitId },
       workout_name: title,
     });
