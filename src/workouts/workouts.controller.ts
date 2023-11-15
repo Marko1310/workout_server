@@ -13,12 +13,23 @@ export class WorkoutsController {
     @RequestUser() user: Users,
   ) {
     const { title, days } = addWorkoutSplit;
-    const { id: UserId } = user;
+    const { id: userId } = user;
     const workoutSplit = await this.workoutService.createWorkoutSplit(
-      UserId,
+      userId,
       title,
       days,
     );
     return workoutSplit;
+  }
+
+  @Post('workout')
+  async createWorkouts(@Body() addWorkout: any) {
+    const { workoutSplitId, title, week } = addWorkout;
+    const workout = await this.workoutService.createWorkouts(
+      workoutSplitId,
+      title,
+      week,
+    );
+    return workout;
   }
 }

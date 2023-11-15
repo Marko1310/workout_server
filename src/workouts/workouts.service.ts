@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { WorkoutSplits } from './entities/workout_splits.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Workouts } from './entities/workouts.entity';
 
 @Injectable()
 export class WorkoutsService {
   constructor(
     @InjectRepository(WorkoutSplits)
     private workoutSplits: Repository<WorkoutSplits>,
+
+    @InjectRepository(Workouts)
+    private workouts: Repository<Workouts>,
   ) {}
   async createWorkoutSplit(userId: number, title: string, days: number) {
     const newWorkoutSplit = this.workoutSplits.create({
@@ -16,5 +20,14 @@ export class WorkoutsService {
       days,
     });
     return this.workoutSplits.save(newWorkoutSplit);
+  }
+
+  async createWorkouts(workoutSplitId: number, title: string, week: number) {
+    const newWorkout = this.workouts.create({
+      workoutSplits: { id: workoutSplitId },
+      workout_name: title,
+      week: week,
+    });
+    return this.workouts.save(newWorkout);
   }
 }
