@@ -14,9 +14,6 @@ export class Exercises extends BaseEntity {
   @Column({ nullable: false })
   goal_reps: number;
 
-  @Column({ nullable: false })
-  week: number;
-
   @ManyToOne(() => Users, (users: Users) => users.exercises, {
     onDelete: 'CASCADE',
   })

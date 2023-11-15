@@ -13,6 +13,9 @@ export class Tracks extends BaseEntity {
   @Column()
   reps: number;
 
+  @Column({ nullable: false })
+  week: number;
+
   @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.tracks, {
     onDelete: 'CASCADE',
   })
