@@ -8,14 +8,14 @@ export class WorkoutSplits extends BaseEntity {
   @Column({ type: 'varchar', length: 300, nullable: false })
   workout_split_name: string;
 
-  @Column()
+  @Column({ nullable: false })
   days: number;
 
-  @ManyToOne(() => Users, (user: Users) => user.workoutSplits, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => Users, (user: Users) => user.workoutSplits)
   users: Users;
 
-  @OneToMany(() => Workouts, (workouts: Workouts) => workouts.workoutSplits)
+  @OneToMany(() => Workouts, (workouts: Workouts) => workouts.workoutSplits, {
+    cascade: ['remove'],
+  })
   workouts: Workouts[];
 }

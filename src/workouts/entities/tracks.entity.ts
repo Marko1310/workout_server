@@ -4,20 +4,18 @@ import { Exercises } from './exercises.entity';
 
 @Entity({ name: 'tracks' })
 export class Tracks extends BaseEntity {
-  @Column()
+  @Column({ nullable: false })
   set: number;
 
-  @Column()
+  @Column({ nullable: false })
   weight: number;
 
-  @Column()
+  @Column({ nullable: false })
   reps: number;
 
   @Column({ nullable: false })
   week: number;
 
-  @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.tracks, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.tracks)
   exercises: Exercises;
 }
