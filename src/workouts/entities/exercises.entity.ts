@@ -15,7 +15,7 @@ export class Exercises extends BaseEntity {
   goal_reps: number;
 
   @ManyToOne(() => Workouts, (workouts: Workouts) => workouts.exercises)
-  workouts: Workouts[];
+  workouts: Workouts;
 
   @OneToMany(() => Tracks, (tracks: Tracks) => tracks.exercises, {
     cascade: ['remove'],

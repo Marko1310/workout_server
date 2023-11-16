@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
 import { RequestUser } from 'users/requestUser.decorator';
 import { Users } from 'users/users.entity';
@@ -24,13 +24,23 @@ export class WorkoutsController {
   }
 
   @Post('workout')
-  async createWorkouts(@Body() addWorkout: any, @RequestUser() user: Users) {
+  async createWorkouts(@Body() addWorkout: any) {
     const { workoutSplitId, title } = addWorkout;
-    const { id: userId } = user;
-    const workout = await this.workoutService.createWorkouts(
-      userId,
+    const workout = await this.workoutService.createWorkout(
       workoutSplitId,
       title,
+    );
+    return workout;
+  }
+
+  @Post('exercise')
+  async createExercise(@Body() addExercise: any) {
+    const { workoutId, title, goalSets, goalReps } = addExercise;
+    const workout = await this.workoutService.createExercise(
+      workoutId,
+      title,
+      goalSets,
+      goalReps,
     );
     return workout;
   }
