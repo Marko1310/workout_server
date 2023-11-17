@@ -1,6 +1,6 @@
 import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../shared/database/base.entity';
-import { Tracks } from './tracks.entity';
+import { Sessions } from './sessions.entity';
 import { Workouts } from './workouts.entity';
 
 @Entity({ name: 'exercises' })
@@ -17,8 +17,8 @@ export class Exercises extends BaseEntity {
   @ManyToOne(() => Workouts, (workouts: Workouts) => workouts.exercises)
   workouts: Workouts;
 
-  @OneToMany(() => Tracks, (tracks: Tracks) => tracks.exercises, {
+  @OneToMany(() => Sessions, (sessions: Sessions) => sessions.exercises, {
     cascade: ['remove'],
   })
-  tracks: Tracks[];
+  sessions: Sessions[];
 }

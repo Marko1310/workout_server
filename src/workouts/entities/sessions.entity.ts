@@ -2,8 +2,8 @@ import { BaseEntity } from '../../shared/database/base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Exercises } from './exercises.entity';
 
-@Entity({ name: 'tracks' })
-export class Tracks extends BaseEntity {
+@Entity({ name: 'sessions' })
+export class Sessions extends BaseEntity {
   @Column({ nullable: false })
   set: number;
 
@@ -16,6 +16,6 @@ export class Tracks extends BaseEntity {
   @Column({ nullable: false })
   week: number;
 
-  @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.tracks)
+  @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.sessions)
   exercises: Exercises;
 }

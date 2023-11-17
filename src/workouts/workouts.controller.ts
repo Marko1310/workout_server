@@ -44,4 +44,11 @@ export class WorkoutsController {
     );
     return workout;
   }
+
+  @Post('session')
+  async createSession(@Body() addSession: any) {
+    const { sessionData } = addSession;
+    const session = await this.workoutService.createSession(sessionData);
+    return session;
+  }
 }

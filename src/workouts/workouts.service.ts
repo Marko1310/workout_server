@@ -4,6 +4,7 @@ import { WorkoutSplits } from './entities/workout_splits.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Workouts } from './entities/workouts.entity';
 import { Exercises } from './entities/exercises.entity';
+import { Sessions } from './entities/sessions.entity';
 
 @Injectable()
 export class WorkoutsService {
@@ -16,6 +17,9 @@ export class WorkoutsService {
 
     @InjectRepository(Exercises)
     private exercises: Repository<Exercises>,
+
+    @InjectRepository(Sessions)
+    private sessions: Repository<Sessions>,
   ) {}
   async createWorkoutSplit(userId: number, title: string, days: number) {
     const newWorkoutSplit = this.workoutSplits.create({
@@ -47,5 +51,31 @@ export class WorkoutsService {
       goal_reps: goalReps,
     });
     return this.exercises.save(newExercise);
+  }
+
+  async createSession(sessionData: any[]) {
+    const promises = sessionData.flatMap(async (session) => {
+      const { exerciseId, sets } = session;
+      const lastSession = await this.sessions.findOne({
+        where: { exercises: { id: exerciseId } },
+        order: { week: 'DESC' },
+      });
+
+      return await Promise.all(
+        sets.map(async (set, index) => {
+          const newSession = this.sessions.create({
+            exercises: { id: exerciseId },
+            set: index + 1,
+            weight: set.weight,
+            reps: set.reps,
+            week: lastSession.week + 1,
+          });
+
+          return this.sessions.save(newSession);
+        }),
+      );
+    });
+
+    return Promise.all(promises);
   }
 }
