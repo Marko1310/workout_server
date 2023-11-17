@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../shared/database/base.entity';
+import { BaseEntity } from '../shared/database/base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Exercises } from './exercises.entity';
 

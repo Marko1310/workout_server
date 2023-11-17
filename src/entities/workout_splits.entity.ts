@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
-import { BaseEntity } from '../../shared/database/base.entity';
-import { Users } from '../../../src/users/users.entity';
+import { BaseEntity } from '../shared/database/base.entity';
+import { Users } from '../modules/users/users.entity';
 import { Workouts } from './workouts.entity';
 
 @Entity({ name: 'workout_splits' })

@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
-import { BaseEntity } from '../../shared/database/base.entity';
+import { BaseEntity } from '../shared/database/base.entity';
 import { Sessions } from './sessions.entity';
 import { Workouts } from './workouts.entity';
 

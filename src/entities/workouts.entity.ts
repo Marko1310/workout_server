@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
-import { BaseEntity } from '../../shared/database/base.entity';
+import { BaseEntity } from '../shared/database/base.entity';
 import { WorkoutSplits } from './workout_splits.entity';
 import { Exercises } from './exercises.entity';
 

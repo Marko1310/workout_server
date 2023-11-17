@@ -3,14 +3,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig from './config/app.config';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { JwtModule } from '@nestjs/jwt';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { IdentityModule } from './identity/identity.module';
 import databaseConfig from './config/database.config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
-import { WorkoutsModule } from './workouts/workouts.module';
+import { UsersModule } from './modules/users/users.module';
+import { WorkoutSplitsModule } from 'modules/workout-splits/workout-splits.module';
+import { WorkoutsModule } from './modules/workouts/workouts.module';
+import { ExercisesModule } from 'modules/exercises/exercises.module';
+import { SessionsModule } from 'modules/sessions/sessions.module';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { IdentityModule } from './identity/identity.module';
 
 @Module({
   imports: [
@@ -45,7 +48,10 @@ import { WorkoutsModule } from './workouts/workouts.module';
     AuthModule,
     UsersModule,
     IdentityModule,
+    WorkoutSplitsModule,
     WorkoutsModule,
+    ExercisesModule,
+    SessionsModule,
   ],
   controllers: [],
   providers: [
