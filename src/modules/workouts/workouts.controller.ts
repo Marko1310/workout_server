@@ -1,14 +1,18 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
+import { AddWorkoutSchema, AddWorkoutSplitDto } from './workout.dto';
+import { ZodPipe } from 'shared/zod.pipe';
 
-//TODO: implement dto's, remove any, zod validation for each request
 @Controller('workouts')
 export class WorkoutsController {
   constructor(private workoutService: WorkoutsService) {}
 
-  @Post('workout')
-  async createWorkouts(@Body() addWorkout: any) {
-    const { workoutSplitId, title } = addWorkout;
+  @Post(':workoutSplitId')
+  async createWorkouts(
+    @Body(new ZodPipe(AddWorkoutSchema)) addWorkoutDto: AddWorkoutSplitDto,
+    @Param('workoutSplitId', ParseIntPipe) workoutSplitId: number,
+  ) {
+    const { title } = addWorkoutDto;
     const workout = await this.workoutService.createWorkout(
       workoutSplitId,
       title,
