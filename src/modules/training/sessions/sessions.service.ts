@@ -10,7 +10,10 @@ export class SessionsService {
     private sessions: Repository<Sessions>,
   ) {}
 
-  async createSession(sessionData: any[]) {
+  //TODO: Imrove validation and functions
+  //TODO: Check each exercise
+  //TODO: Imrove week variable when it is null
+  async createSession(sessionData: any) {
     const promises = sessionData.flatMap(async (session) => {
       const { exerciseId, sets } = session;
       const lastSession = await this.sessions.findOne({
@@ -34,5 +37,6 @@ export class SessionsService {
     });
 
     return Promise.all(promises);
+    return sessionData;
   }
 }

@@ -18,10 +18,10 @@ export class ExercisesController {
 
   @Post(':workoutId')
   async createExercise(
-    @Body(new ZodPipe(AddExerciseSchema)) addExercise: AddExerciseDto,
+    @Body(new ZodPipe(AddExerciseSchema)) addExerciseDto: AddExerciseDto,
     @Param('workoutId', ParseIntPipe, WorkoutExistsPipe) workoutId: number,
   ) {
-    const { title, goalSets, goalReps } = addExercise;
+    const { title, goalSets, goalReps } = addExerciseDto;
     const workout = await this.exerciseService.createExercise(
       workoutId,
       title,
