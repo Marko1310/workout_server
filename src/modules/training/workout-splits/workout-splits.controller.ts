@@ -2,9 +2,12 @@ import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { RequestUser } from 'modules/users/requestUser.decorator';
 import { Users } from '@entities/users.entity';
 import { WorkoutSplitsService } from './workout-splits.service';
-import { AddWorkoutSplitSchema, AddWorkoutSplitDto } from './workout-split.dto';
+import {
+  AddWorkoutSplitSchema,
+  AddWorkoutSplitDto,
+} from './dto/workout-split.dto';
 import { ZodPipe } from 'shared/zod.pipe';
-import { WorkoutSplitExistsPipe } from '../workoutSplitExist.pipe';
+import { WorkoutSplitExistsPipe } from './pipes/workoutSplitExist.pipe';
 
 @Controller('workout-splits')
 export class WorkoutSplitsController {

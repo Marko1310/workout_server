@@ -9,7 +9,7 @@ import {
 import { WorkoutsService } from './workouts.service';
 import { AddWorkoutSchema, AddWorkoutSplitDto } from './workout.dto';
 import { ZodPipe } from 'shared/zod.pipe';
-import { WorkoutSplitExistsPipe } from '../workoutSplitExist.pipe';
+import { WorkoutSplitExistsPipe } from '../workout-splits/pipes/workoutSplitExist.pipe';
 
 @Controller('workouts')
 export class WorkoutsController {

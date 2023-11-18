@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { WorkoutSplits } from '../../entities/workout_splits.entity';
+import { WorkoutSplits } from '@entities/workout_splits.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
