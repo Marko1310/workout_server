@@ -1,8 +1,16 @@
-import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { ZodPipe } from 'shared/zod.pipe';
 import { AddExerciseDto, AddExerciseSchema } from './dto/exercise.dto';
-import { WorkoutExistsPipe } from './pipes/workoutExist.pipe';
+import { WorkoutExistsPipe } from '../workouts/pipes/workoutExist.pipe';
+import { exerciseExistPipe } from './pipes/exerciseExist.pipe';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -21,5 +29,14 @@ export class ExercisesController {
       goalReps,
     );
     return workout;
+  }
+
+  @Delete(':exerciseId')
+  async deleteExercise(
+    @Param('exerciseId', ParseIntPipe, exerciseExistPipe) exerciseId: number,
+  ) {
+    const exerciseToDelete =
+      await this.exerciseService.deleteExercise(exerciseId);
+    return exerciseToDelete;
   }
 }

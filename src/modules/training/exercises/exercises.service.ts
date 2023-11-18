@@ -24,4 +24,11 @@ export class ExercisesService {
     });
     return this.exercises.save(newExercise);
   }
+
+  async deleteExercise(exerciseId: number) {
+    const deletedExercise = this.exercises.delete({
+      id: exerciseId,
+    });
+    return deletedExercise;
+  }
 }

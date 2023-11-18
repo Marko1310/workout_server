@@ -1,3 +1,4 @@
+import { Exercises } from '@entities/exercises.entity';
 import {
   PipeTransform,
   Injectable,
@@ -6,24 +7,23 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Workouts } from '@entities/workouts.entity';
 
 @Injectable()
-export class WorkoutExistsPipe implements PipeTransform {
+export class exerciseExistPipe implements PipeTransform {
   constructor(
-    @InjectRepository(Workouts)
-    private workouts: Repository<Workouts>,
+    @InjectRepository(Exercises)
+    private exercises: Repository<Exercises>,
   ) {}
 
   async transform(value: number, metadata: ArgumentMetadata) {
-    const workout = await this.workouts.findOne({
+    const exercise = await this.exercises.findOne({
       where: {
         id: value,
       },
     });
 
-    if (!workout)
-      throw new NotFoundException(`Workout with ID ${value} not found`);
+    if (!exercise)
+      throw new NotFoundException(`Exercisese with ID ${value} not found`);
 
     return value;
   }
