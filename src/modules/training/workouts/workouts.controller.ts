@@ -1,8 +1,15 @@
-import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
 import { AddWorkoutSchema, AddWorkoutSplitDto } from './workout.dto';
 import { ZodPipe } from 'shared/zod.pipe';
-import { WorkoutSplitExistsPipe } from 'modules/workouts/workoutSplitExist.pipe';
+import { WorkoutSplitExistsPipe } from '../workoutSplitExist.pipe';
 
 @Controller('workouts')
 export class WorkoutsController {

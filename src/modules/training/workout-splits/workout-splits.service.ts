@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { WorkoutSplits } from '../../entities/workout_splits.entity';
+import { WorkoutSplits } from '@entities/workout_splits.entity';
 
 @Injectable()
 export class WorkoutSplitsService {
@@ -17,5 +17,12 @@ export class WorkoutSplitsService {
       days,
     });
     return this.workoutSplits.save(newWorkoutSplit);
+  }
+
+  async deleteWorkoutSplit(workoutSplitId: number) {
+    const deletedWorkoutSplit = this.workoutSplits.delete({
+      id: workoutSplitId,
+    });
+    return deletedWorkoutSplit;
   }
 }

@@ -2,7 +2,6 @@ import {
   PipeTransform,
   Injectable,
   ArgumentMetadata,
-  BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,10 +16,6 @@ export class WorkoutSplitExistsPipe implements PipeTransform {
   ) {}
 
   async transform(value: number, metadata: ArgumentMetadata) {
-    if (!value) {
-      throw new BadRequestException('Invalid workout split ID');
-    }
-
     const workoutSplit = await this.workoutSplits.findOne({
       where: {
         id: value,

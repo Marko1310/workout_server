@@ -1,6 +1,6 @@
-import { WorkoutSplits } from '../../entities/workout_splits.entity';
+import { WorkoutSplits } from './workout_splits.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseEntity } from '../../shared/database/base.entity';
+import { BaseEntity } from '../shared/database/base.entity';
 
 @Entity({ name: 'users' })
 export class Users extends BaseEntity {

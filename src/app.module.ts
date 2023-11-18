@@ -6,14 +6,14 @@ import { AuthModule } from './auth/auth.module';
 import databaseConfig from './config/database.config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
-import { UsersModule } from './modules/users/users.module';
-import { WorkoutSplitsModule } from 'modules/workout-splits/workout-splits.module';
-import { WorkoutsModule } from './modules/workouts/workouts.module';
-import { ExercisesModule } from 'modules/exercises/exercises.module';
-import { SessionsModule } from 'modules/sessions/sessions.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { IdentityModule } from './identity/identity.module';
+import { UsersModule } from '@users-modules/users.module';
+import { WorkoutSplitsModule } from '@training-modules/workout-splits/workout-splits.module';
+import { WorkoutsModule } from '@training-modules/workouts/workouts.module';
+import { ExercisesModule } from '@training-modules/exercises/exercises.module';
+import { SessionsModule } from '@training-modules/sessions/sessions.module';
+import { IdentityModule } from '@identity-modules/identity.module';
 
 @Module({
   imports: [
