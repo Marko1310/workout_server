@@ -7,7 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
-import { AddWorkoutSchema, AddWorkoutSplitDto } from './dto/workout.dto';
+import { AddWorkoutSchema, AddWorkoutDto } from './dto/workout.dto';
 import { ZodPipe } from 'shared/zod.pipe';
 import { WorkoutSplitExistsPipe } from '../workout-splits/pipes/workoutSplitExist.pipe';
 import { WorkoutExistsPipe } from './pipes/workoutExist.pipe';
@@ -18,7 +18,7 @@ export class WorkoutsController {
 
   @Post(':workoutSplitId')
   async createWorkouts(
-    @Body(new ZodPipe(AddWorkoutSchema)) addWorkoutDto: AddWorkoutSplitDto,
+    @Body(new ZodPipe(AddWorkoutSchema)) addWorkoutDto: AddWorkoutDto,
     @Param('workoutSplitId', ParseIntPipe, WorkoutSplitExistsPipe)
     workoutSplitId: number,
   ) {

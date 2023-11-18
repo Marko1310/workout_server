@@ -22,9 +22,9 @@ export class WorkoutSplitExistsPipe implements PipeTransform {
       },
     });
 
-    if (!workoutSplit) {
+    if (!workoutSplit)
       throw new NotFoundException(`Workout split with ID ${value} not found`);
-    }
+
     return value;
   }
 }
