@@ -33,8 +33,8 @@ export class WorkoutSplitsController {
   async deleteWorkoutSplit(
     @Param('workoutSplitId', WorkoutSplitExistsPipe) workoutSplitId: number,
   ) {
-    const deletedWorkoutSplit =
+    const workoutSplitToDelete =
       await this.workoutSplitService.deleteWorkoutSplit(workoutSplitId);
-    return deletedWorkoutSplit;
+    return workoutSplitToDelete;
   }
 }

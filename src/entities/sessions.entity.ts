@@ -16,6 +16,8 @@ export class Sessions extends BaseEntity {
   @Column({ nullable: false })
   week: number;
 
-  @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.sessions)
+  @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.sessions, {
+    onDelete: 'CASCADE',
+  })
   exercises: Exercises;
 }

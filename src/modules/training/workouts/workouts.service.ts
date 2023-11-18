@@ -17,4 +17,11 @@ export class WorkoutsService {
     });
     return this.workouts.save(newWorkout);
   }
+
+  async deleteWorkout(workoutId: number) {
+    const deletedWorkoutSplit = this.workouts.delete({
+      id: workoutId,
+    });
+    return deletedWorkoutSplit;
+  }
 }

@@ -11,7 +11,9 @@ export class WorkoutSplits extends BaseEntity {
   @Column({ nullable: false })
   days: number;
 
-  @ManyToOne(() => Users, (user: Users) => user.workoutSplits)
+  @ManyToOne(() => Users, (user: Users) => user.workoutSplits, {
+    onDelete: 'CASCADE',
+  })
   users: Users;
 
   @OneToMany(() => Workouts, (workouts: Workouts) => workouts.workoutSplits, {

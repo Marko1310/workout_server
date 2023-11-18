@@ -14,7 +14,9 @@ export class Exercises extends BaseEntity {
   @Column({ nullable: false })
   goal_reps: number;
 
-  @ManyToOne(() => Workouts, (workouts: Workouts) => workouts.exercises)
+  @ManyToOne(() => Workouts, (workouts: Workouts) => workouts.exercises, {
+    onDelete: 'CASCADE',
+  })
   workouts: Workouts;
 
   @OneToMany(() => Sessions, (sessions: Sessions) => sessions.exercises, {

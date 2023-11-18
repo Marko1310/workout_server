@@ -7,9 +7,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
-import { AddWorkoutSchema, AddWorkoutSplitDto } from './workout.dto';
+import { AddWorkoutSchema, AddWorkoutSplitDto } from './dto/workout.dto';
 import { ZodPipe } from 'shared/zod.pipe';
 import { WorkoutSplitExistsPipe } from '../workout-splits/pipes/workoutSplitExist.pipe';
+import { WorkoutExistsPipe } from './pipes/workoutExist.pipe';
 
 @Controller('workouts')
 export class WorkoutsController {
@@ -27,5 +28,13 @@ export class WorkoutsController {
       title,
     );
     return workout;
+  }
+
+  @Delete(':workoutId')
+  async deleteWorkout(
+    @Param('workoutId', ParseIntPipe, WorkoutExistsPipe) workoutId: number,
+  ) {
+    const workoutToDelete = await this.workoutService.deleteWorkout(workoutId);
+    return workoutToDelete;
   }
 }
