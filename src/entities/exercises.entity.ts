@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../shared/database/base.entity';
 import { Sessions } from './sessions.entity';
 import { Workouts } from './workouts.entity';
+import { Users } from './users.entity';
 
 @Entity({ name: 'exercises' })
 export class Exercises extends BaseEntity {
@@ -13,6 +14,11 @@ export class Exercises extends BaseEntity {
 
   @Column({ nullable: false })
   goal_reps: number;
+
+  @ManyToOne(() => Users, (user: Users) => user.workoutSplits, {
+    onDelete: 'CASCADE',
+  })
+  users: Users;
 
   @ManyToOne(() => Workouts, (workouts: Workouts) => workouts.exercises, {
     onDelete: 'CASCADE',

@@ -1,6 +1,7 @@
 import { BaseEntity } from '../shared/database/base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Exercises } from './exercises.entity';
+import { Users } from './users.entity';
 
 @Entity({ name: 'sessions' })
 export class Sessions extends BaseEntity {
@@ -15,6 +16,11 @@ export class Sessions extends BaseEntity {
 
   @Column({ nullable: false })
   week: number;
+
+  @ManyToOne(() => Users, (user: Users) => user.workoutSplits, {
+    onDelete: 'CASCADE',
+  })
+  users: Users;
 
   @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.sessions, {
     onDelete: 'CASCADE',
