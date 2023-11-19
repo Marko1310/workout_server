@@ -4,12 +4,14 @@ import { SignupDto } from 'auth/dto/signup.dto';
 import { UsersService } from 'modules/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { Users } from '@entities/users.entity';
+import { AuthorizationService } from './authorization.service';
 
 @Injectable()
 export class IdentityService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
+    private authorizationService: AuthorizationService,
   ) {}
 
   async signup(signupDto: SignupDto) {
@@ -24,8 +26,7 @@ export class IdentityService {
   }
 
   private async assignAccessToken(identity: Users) {
-    //TODO: authorization and permissions
-    const permissions = 'assign permissions';
+    const permissions = await this.authorizationService.getPermission(identity);
     const payload = { permissions, subject: String(identity.id) };
     const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;

@@ -1,4 +1,11 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { RequestUser } from 'modules/users/requestUser.decorator';
 import { Users } from '@entities/users.entity';
 import { WorkoutSplitsService } from './workout-splits.service';
@@ -8,8 +15,10 @@ import {
 } from './dto/workout-split.dto';
 import { ZodPipe } from 'shared/zod.pipe';
 import { WorkoutSplitExistsPipe } from './pipes/workoutSplitExist.pipe';
+import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
 
 @Controller('workout-splits')
+// @UseGuards(PermissionGuard)
 export class WorkoutSplitsController {
   constructor(private workoutSplitService: WorkoutSplitsService) {}
 
@@ -30,6 +39,7 @@ export class WorkoutSplitsController {
   }
 
   @Delete(':workoutSplitId')
+  // @Permission('update', 'Workout-Split')
   async deleteWorkoutSplit(
     @Param('workoutSplitId', WorkoutSplitExistsPipe) workoutSplitId: number,
   ) {

@@ -7,11 +7,11 @@ import { AppAbility } from 'shared/auth/authorization';
 @Injectable()
 export class AuthorizationService {
   async getPermission(identity: Users) {
-    if ((identity.role = Role.ADMIN)) {
+    if (identity.role === Role.ADMIN) {
       const rules = this.getAdminPermissions();
       return packRules(rules);
     }
-    if ((identity.role = Role.USER)) {
+    if (identity.role === Role.USER) {
       const rules = this.getUserPermissions(identity);
       return packRules(rules);
     }
