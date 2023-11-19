@@ -1,18 +1,23 @@
 import { z } from 'zod';
 
-const DataSchema = z.object({
+const SetSchema = z.object({
   weight: z.number(),
   reps: z.number(),
-  week: z.number(),
+  week: z.number().optional(),
 });
+
+export type SetDto = z.infer<typeof SetSchema>;
 
 const EachSessionSchema = z.object({
   exerciseId: z.number(),
-  sets: z.array(DataSchema),
+  sets: z.array(SetSchema),
 });
 
+const SessionArraySchema = z.array(EachSessionSchema);
+export type ExerciseArrayDto = z.infer<typeof SessionArraySchema>;
+
 export const AddSessionsSchema = z.object({
-  exercisesData: z.array(EachSessionSchema),
+  exercisesData: SessionArraySchema,
 });
 
 export type AddSessionsDto = z.infer<typeof AddSessionsSchema>;

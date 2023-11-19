@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Sessions } from '@entities/sessions.entity';
 import { Repository } from 'typeorm';
+import { ExerciseArrayDto, SetDto } from './dto/session.dto';
 
 @Injectable()
 export class SessionsService {
@@ -10,33 +11,46 @@ export class SessionsService {
     private sessions: Repository<Sessions>,
   ) {}
 
-  //TODO: Imrove validation and functions
-  //TODO: Check each exercise
-  //TODO: Imrove week variable when it is null
-  async createSession(sessionData: any) {
+  async createSession(sessionData: ExerciseArrayDto) {
     const promises = sessionData.flatMap(async (session) => {
       const { exerciseId, sets } = session;
-      const lastSession = await this.sessions.findOne({
-        where: { exercises: { id: exerciseId } },
-        order: { week: 'DESC' },
-      });
+      const lastSession = await this.findLastSession(exerciseId);
 
       return await Promise.all(
         sets.map(async (set, index) => {
-          const newSession = this.sessions.create({
-            exercises: { id: exerciseId },
-            set: index + 1,
-            weight: set.weight,
-            reps: set.reps,
-            week: lastSession.week ? lastSession.week + 1 : 1,
-          });
-
+          const newSession = await this.createNewSession(
+            exerciseId,
+            index,
+            set,
+            lastSession,
+          );
           return this.sessions.save(newSession);
         }),
       );
     });
 
     return Promise.all(promises);
-    return sessionData;
+  }
+
+  private async findLastSession(exerciseId: number) {
+    return this.sessions.findOne({
+      where: { exercises: { id: exerciseId } },
+      order: { week: 'DESC' },
+    });
+  }
+
+  private async createNewSession(
+    exerciseId: number,
+    index: number,
+    set: SetDto,
+    lastSession: SetDto,
+  ) {
+    return this.sessions.create({
+      exercises: { id: exerciseId },
+      set: index + 1,
+      weight: set.weight,
+      reps: set.reps,
+      week: lastSession ? lastSession.week + 1 : 1,
+    });
   }
 }
