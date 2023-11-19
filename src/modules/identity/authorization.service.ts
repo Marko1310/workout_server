@@ -2,6 +2,7 @@ import { AbilityBuilder, createMongoAbility } from '@casl/ability';
 import { Role, Users } from '@entities/users.entity';
 import { Injectable } from '@nestjs/common';
 import { packRules } from '@casl/ability/extra';
+import { AppAbility } from 'shared/auth/authorization';
 
 @Injectable()
 export class AuthorizationService {
