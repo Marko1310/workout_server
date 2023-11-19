@@ -6,7 +6,7 @@ import { AppAbility } from 'shared/auth/authorization';
 
 @Injectable()
 export class AuthorizationService {
-  async getPermission(identity: Users) {
+  async getPermissions(identity: Users) {
     if (identity.role === Role.ADMIN) {
       const rules = this.getAdminPermissions();
       return packRules(rules);

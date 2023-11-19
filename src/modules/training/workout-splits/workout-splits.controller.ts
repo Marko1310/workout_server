@@ -18,11 +18,12 @@ import { WorkoutSplitExistsPipe } from './pipes/workoutSplitExist.pipe';
 import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
 
 @Controller('workout-splits')
-// @UseGuards(PermissionGuard)
+@UseGuards(PermissionGuard)
 export class WorkoutSplitsController {
   constructor(private workoutSplitService: WorkoutSplitsService) {}
 
   @Post('workout-split')
+  @Permission('create', 'Workout-Split')
   async createWorkoutSplit(
     @Body(new ZodPipe(AddWorkoutSplitSchema))
     addWorkoutSplitDto: AddWorkoutSplitDto,
@@ -39,7 +40,6 @@ export class WorkoutSplitsController {
   }
 
   @Delete(':workoutSplitId')
-  // @Permission('update', 'Workout-Split')
   async deleteWorkoutSplit(
     @Param('workoutSplitId', WorkoutSplitExistsPipe) workoutSplitId: number,
   ) {
