@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../shared/database/base.entity';
 import { WorkoutSplits } from './workout_splits.entity';
 import { Exercises } from './exercises.entity';
@@ -18,7 +18,9 @@ export class Workouts extends BaseEntity {
 
   @ManyToOne(() => Users, (user: Users) => user.workoutSplits, {
     onDelete: 'CASCADE',
+    eager: true,
   })
+  @JoinColumn({ name: 'userId' })
   users: Users;
 
   @OneToMany(() => Exercises, (exercises: Exercises) => exercises.workouts, {
