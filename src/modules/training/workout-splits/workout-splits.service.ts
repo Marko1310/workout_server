@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WorkoutSplits } from '@entities/workout_splits.entity';
@@ -24,5 +24,12 @@ export class WorkoutSplitsService {
       id: workoutSplitId,
     });
     return deletedWorkoutSplit;
+  }
+
+  async findOne(workoutSplitId: number) {
+    const workoutSplit = await this.workoutSplits.findOne({
+      where: { id: workoutSplitId },
+    });
+    return workoutSplit;
   }
 }

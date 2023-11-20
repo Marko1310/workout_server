@@ -2,12 +2,12 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { RequestUser } from 'modules/users/requestUser.decorator';
-import { Users } from '@entities/users.entity';
+import { RequestUser } from '@users-modules/decorator/requestUser.decorator';
 import { WorkoutSplitsService } from './workout-splits.service';
 import {
   AddWorkoutSplitSchema,
@@ -16,6 +16,8 @@ import {
 import { ZodPipe } from 'shared/zod.pipe';
 import { WorkoutSplitExistsPipe } from './pipes/workoutSplitExist.pipe';
 import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
+import { hasPermission } from 'shared/auth/authorization';
+import { RequestUserDto } from '@users-modules/dto/request-user.dto';
 
 @Controller('workout-splits')
 @UseGuards(PermissionGuard)
@@ -27,7 +29,7 @@ export class WorkoutSplitsController {
   async createWorkoutSplit(
     @Body(new ZodPipe(AddWorkoutSplitSchema))
     addWorkoutSplitDto: AddWorkoutSplitDto,
-    @RequestUser() user: Users,
+    @RequestUser() user: RequestUserDto,
   ) {
     const { title, days } = addWorkoutSplitDto;
     const { id: userId } = user;
@@ -42,7 +44,12 @@ export class WorkoutSplitsController {
   @Delete(':workoutSplitId')
   async deleteWorkoutSplit(
     @Param('workoutSplitId', WorkoutSplitExistsPipe) workoutSplitId: number,
+    @RequestUser() user: RequestUserDto,
   ) {
+    const workoutSplit = await this.workoutSplitService.findOne(workoutSplitId);
+    if (!hasPermission(user.permissions, 'delete', workoutSplit)) {
+      throw new ForbiddenException();
+    }
     const workoutSplitToDelete =
       await this.workoutSplitService.deleteWorkoutSplit(workoutSplitId);
     return workoutSplitToDelete;

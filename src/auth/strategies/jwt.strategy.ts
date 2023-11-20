@@ -21,10 +21,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const permission = unpackRules(payload.permissions);
+    const permissions = unpackRules(payload.permissions);
     return {
       id: payload.subject,
-      permissions: permission,
+      permissions: permissions,
     };
   }
 }

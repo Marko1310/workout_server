@@ -35,7 +35,7 @@ export class IdentityService {
 
   private async upsertUser(signupDto: SignupDto) {
     const { name, email, password } = signupDto;
-    const existingUser = await this.userService.findOne(email);
+    const existingUser = await this.userService.findOneByMail(email);
     if (existingUser) throw new ConflictException('User already exists');
 
     const salt = await bcrypt.genSalt();

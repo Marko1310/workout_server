@@ -14,8 +14,12 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  async findOne(email: string): Promise<Users | null> {
+  async findOneByMail(email: string): Promise<Users | null> {
     return this.userRepository.findOneBy({ email });
+  }
+
+  async findOneById(id: number): Promise<Users | null> {
+    return this.userRepository.findOneBy({ id });
   }
 
   async create(name: string, email: string, hashedPassword: string) {
