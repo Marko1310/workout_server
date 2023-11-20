@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   ForbiddenException,
+  Get,
   Param,
   Post,
   UseGuards,
@@ -25,7 +26,7 @@ export class WorkoutSplitsController {
   constructor(private workoutSplitService: WorkoutSplitsService) {}
 
   @Post('workout-split')
-  @Permission('create', 'Workout-Split')
+  @Permission('create', 'WorkoutSplits')
   async createWorkoutSplit(
     @Body(new ZodPipe(AddWorkoutSplitSchema))
     addWorkoutSplitDto: AddWorkoutSplitDto,
@@ -53,5 +54,12 @@ export class WorkoutSplitsController {
     const workoutSplitToDelete =
       await this.workoutSplitService.deleteWorkoutSplit(workoutSplitId);
     return workoutSplitToDelete;
+  }
+
+  @Get(':userId')
+  @Permission('read', 'WorkoutSplits')
+  async getAllWorkoutSplits(@Param('userId') userId: number) {
+    const workoutSplits = await this.workoutSplitService.getAllByUserId(userId);
+    return workoutSplits;
   }
 }
