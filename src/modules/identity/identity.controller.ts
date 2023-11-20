@@ -13,8 +13,12 @@ import { LocalAuthGuard } from 'auth/guards/local-auth.guard';
 import { NoJwtAuth } from 'auth/noJwtAuth.decorator';
 import { SignupDto, SignupDtoSchema } from 'auth/dto/signup.dto';
 import { ZodPipe } from 'shared/zod.pipe';
+import { RequestUser } from '@users-modules/decorator/requestUser.decorator';
+import { RequestUserDto } from '@users-modules/dto/request-user.dto';
+import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
 
 @Controller('identity')
+@UseGuards(PermissionGuard)
 export class IdentityController {
   constructor(private identityService: IdentityService) {}
 
@@ -37,7 +41,8 @@ export class IdentityController {
   }
 
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @Permission('read', 'Users')
+  getProfile(@RequestUser() user: RequestUserDto) {
+    return user;
   }
 }

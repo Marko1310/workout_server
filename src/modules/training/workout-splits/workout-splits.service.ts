@@ -7,34 +7,34 @@ import { WorkoutSplits } from '@entities/workout_splits.entity';
 export class WorkoutSplitsService {
   constructor(
     @InjectRepository(WorkoutSplits)
-    private workoutSplits: Repository<WorkoutSplits>,
+    private workoutSplitsRepository: Repository<WorkoutSplits>,
   ) {}
 
   async createWorkoutSplit(userId: number, title: string, days: number) {
-    const newWorkoutSplit = this.workoutSplits.create({
+    const newWorkoutSplit = this.workoutSplitsRepository.create({
       users: { id: userId },
       workout_split_name: title,
       days,
     });
-    return this.workoutSplits.save(newWorkoutSplit);
+    return this.workoutSplitsRepository.save(newWorkoutSplit);
   }
 
   async deleteWorkoutSplit(workoutSplitId: number) {
-    const deletedWorkoutSplit = this.workoutSplits.delete({
+    const deletedWorkoutSplit = this.workoutSplitsRepository.delete({
       id: workoutSplitId,
     });
     return deletedWorkoutSplit;
   }
 
   async findOne(workoutSplitId: number) {
-    const workoutSplit = await this.workoutSplits.findOne({
+    const workoutSplit = await this.workoutSplitsRepository.findOne({
       where: { id: workoutSplitId },
     });
     return workoutSplit;
   }
 
   async getAllByUserId(userId: number) {
-    const workoutSplits = await this.workoutSplits.find({
+    const workoutSplits = await this.workoutSplitsRepository.find({
       relations: ['users'],
       where: { users: { id: userId } },
     });
