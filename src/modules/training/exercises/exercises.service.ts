@@ -40,4 +40,12 @@ export class ExercisesService {
     });
     return exercise;
   }
+
+  async getAllByWorkoutId(workoutId: number) {
+    const exercises = await this.exercisesRepository.find({
+      relations: ['workouts'],
+      where: { workouts: { id: workoutId } },
+    });
+    return exercises;
+  }
 }

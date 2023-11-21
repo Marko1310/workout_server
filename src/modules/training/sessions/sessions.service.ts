@@ -33,6 +33,13 @@ export class SessionsService {
     return Promise.all(promises);
   }
 
+  async getLastSessionsForExercise(exerciseId: number) {
+    return this.sessionsRepository.findOne({
+      where: { exercises: { id: exerciseId } },
+      order: { week: 'DESC' },
+    });
+  }
+
   private async findLastSession(exerciseId: number) {
     return this.sessionsRepository.findOne({
       where: { exercises: { id: exerciseId } },
