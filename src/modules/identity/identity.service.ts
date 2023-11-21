@@ -16,13 +16,11 @@ export class IdentityService {
 
   async signup(signupDto: SignupDto) {
     const identity = await this.upsertUser(signupDto);
-    const accessToken = await this.assignAccessToken(identity);
-    return accessToken;
+    return await this.assignAccessToken(identity);
   }
 
   async login(identity: any) {
-    const accessToken = await this.assignAccessToken(identity);
-    return accessToken;
+    return await this.assignAccessToken(identity);
   }
 
   private async assignAccessToken(identity: Users) {
@@ -40,7 +38,6 @@ export class IdentityService {
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = await this.userService.create(name, email, hashedPassword);
-    return newUser;
+    return await this.userService.create(name, email, hashedPassword);
   }
 }

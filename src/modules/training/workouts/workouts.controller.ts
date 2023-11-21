@@ -18,7 +18,7 @@ import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
 import { hasPermission } from 'shared/auth/authorization';
 import { RequestUser } from '@users-modules/decorator/requestUser.decorator';
 import { RequestUserDto } from '@users-modules/dto/request-user.dto';
-import { ExerciseSessionOrchestratorService } from 'modules/exerciseSessionOrchestrator/exerciseSessionOrchestrator.service';
+import { ExerciseSessionOrchestratorService } from '@training-modules/exerciseSessionOrchestrator/exerciseSessionOrchestrator.service';
 
 @Controller('workouts')
 @UseGuards(PermissionGuard)
@@ -54,22 +54,18 @@ export class WorkoutsController {
     if (!hasPermission(user.permissions, 'delete', workout)) {
       throw new ForbiddenException();
     }
-    const workoutToDelete = await this.workoutService.deleteWorkout(workoutId);
-    return workoutToDelete;
+    return await this.workoutService.deleteWorkout(workoutId);
   }
 
   @Get(':userId')
   @Permission('read', 'Workouts')
   async getAllWorkouts(@Param('userId') userId: number) {
-    const workouts = await this.workoutService.getAllByUserId(userId);
-    return workouts;
+    return await this.workoutService.getAllByUserId(userId);
   }
 
   @Get('/previous/:workoutId')
   @Permission('read', 'Workouts')
   async getLastWorkout(@Param('workoutId') workoutId: number) {
-    const lastWorkout =
-      await this.orchestratorService.getWorkoutDetails(workoutId);
-    return lastWorkout;
+    return await this.orchestratorService.getLastWorkoutDetails(workoutId);
   }
 }

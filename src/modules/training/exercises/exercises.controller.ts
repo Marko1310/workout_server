@@ -51,8 +51,6 @@ export class ExercisesController {
     if (!hasPermission(user.permissions, 'delete', exercise)) {
       throw new ForbiddenException();
     }
-    const exerciseToDelete =
-      await this.exerciseService.deleteExercise(exerciseId);
-    return exerciseToDelete;
+    return await this.exerciseService.deleteExercise(exerciseId);
   }
 }

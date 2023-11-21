@@ -20,25 +20,21 @@ export class WorkoutsService {
   }
 
   async deleteWorkout(workoutId: number) {
-    const deletedWorkoutSplit = this.workoutsRepository.delete({
+    return await this.workoutsRepository.delete({
       id: workoutId,
     });
-    return deletedWorkoutSplit;
   }
 
   async findOne(workoutId: number) {
-    const workout = await this.workoutsRepository.findOne({
+    return await this.workoutsRepository.findOne({
       where: { id: workoutId },
     });
-    return workout;
   }
 
   async getAllByUserId(userId: number) {
-    const workouts = await this.workoutsRepository.find({
+    return await this.workoutsRepository.find({
       relations: { users: true },
       where: { users: { id: userId } },
     });
-
-    return workouts;
   }
 }

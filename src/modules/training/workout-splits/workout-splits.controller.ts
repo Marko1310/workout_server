@@ -51,15 +51,12 @@ export class WorkoutSplitsController {
     if (!hasPermission(user.permissions, 'delete', workoutSplit)) {
       throw new ForbiddenException();
     }
-    const workoutSplitToDelete =
-      await this.workoutSplitService.deleteWorkoutSplit(workoutSplitId);
-    return workoutSplitToDelete;
+    return await this.workoutSplitService.deleteWorkoutSplit(workoutSplitId);
   }
 
   @Get(':userId')
   @Permission('read', 'WorkoutSplits')
   async getAllWorkoutSplits(@Param('userId') userId: number) {
-    const workoutSplits = await this.workoutSplitService.getAllByUserId(userId);
-    return workoutSplits;
+    return await this.workoutSplitService.getAllByUserId(userId);
   }
 }

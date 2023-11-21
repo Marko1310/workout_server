@@ -4,7 +4,7 @@ import { WorkoutsController } from './workouts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Workouts } from '@entities/workouts.entity';
 import { WorkoutSplits } from '@entities/workout_splits.entity';
-import { ExerciseSessionOrchestratorModule } from 'modules/exerciseSessionOrchestrator/exerciseSessionOrchestrator.module';
+import { ExerciseSessionOrchestratorModule } from '@training-modules/exerciseSessionOrchestrator/exerciseSessionOrchestrator.module';
 
 @Module({
   providers: [WorkoutsService],

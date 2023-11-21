@@ -28,24 +28,21 @@ export class ExercisesService {
   }
 
   async deleteExercise(exerciseId: number) {
-    const deletedExercise = this.exercisesRepository.delete({
+    return await this.exercisesRepository.delete({
       id: exerciseId,
     });
-    return deletedExercise;
   }
 
   async findOne(exerciseId: number) {
-    const exercise = await this.exercisesRepository.findOne({
+    return await this.exercisesRepository.findOne({
       where: { id: exerciseId },
     });
-    return exercise;
   }
 
   async getAllByWorkoutId(workoutId: number) {
-    const exercises = await this.exercisesRepository.find({
+    return await this.exercisesRepository.find({
       relations: ['workouts'],
       where: { workouts: { id: workoutId } },
     });
-    return exercises;
   }
 }

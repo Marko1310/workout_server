@@ -8,7 +8,6 @@ import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [UsersModule, PassportModule],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  controllers: [],
   exports: [AuthService],
 })
 export class AuthModule {}
