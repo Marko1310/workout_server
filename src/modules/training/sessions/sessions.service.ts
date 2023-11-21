@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Sessions } from '@entities/sessions.entity';
 import { Repository } from 'typeorm';
-import { ExerciseArrayDto, SetDto } from './dto/session.dto';
+import { SessionArrayDto, SetDto } from './dto/session.dto';
 
 @Injectable()
 export class SessionsService {
@@ -11,7 +11,7 @@ export class SessionsService {
     private sessionsRepository: Repository<Sessions>,
   ) {}
 
-  async createSession(userId: number, sessionData: ExerciseArrayDto) {
+  async createSession(userId: number, sessionData: SessionArrayDto) {
     const promises = sessionData.flatMap(async (session) => {
       const { exerciseId, sets } = session;
       const lastSession = await this.findLastSession(exerciseId);

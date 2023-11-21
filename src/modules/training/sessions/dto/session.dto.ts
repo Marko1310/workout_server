@@ -14,7 +14,7 @@ const EachSessionSchema = z.object({
 });
 
 const SessionArraySchema = z.array(EachSessionSchema);
-export type ExerciseArrayDto = z.infer<typeof SessionArraySchema>;
+export type SessionArrayDto = z.infer<typeof SessionArraySchema>;
 
 export const AddSessionsSchema = z.object({
   exercisesData: SessionArraySchema,
