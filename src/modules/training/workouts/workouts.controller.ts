@@ -61,11 +61,11 @@ export class WorkoutsController {
   @Get(':userId')
   @Permission('read', 'Workouts')
   async getAllWorkouts(@Param('userId') userId: number) {
-    const workoutSplits = await this.workoutService.getAllByUserId(userId);
-    return workoutSplits;
+    const workouts = await this.workoutService.getAllByUserId(userId);
+    return workouts;
   }
 
-  @Get('/details/:workoutId')
+  @Get('/previous/:workoutId')
   @Permission('read', 'Workouts')
   async getLastWorkout(@Param('workoutId') workoutId: number) {
     const lastWorkout =

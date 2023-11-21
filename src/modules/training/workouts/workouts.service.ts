@@ -34,11 +34,11 @@ export class WorkoutsService {
   }
 
   async getAllByUserId(userId: number) {
-    const workoutSplits = await this.workoutsRepository.find({
-      relations: ['users'],
+    const workouts = await this.workoutsRepository.find({
+      relations: { users: true },
       where: { users: { id: userId } },
     });
 
-    return workoutSplits;
+    return workouts;
   }
 }
