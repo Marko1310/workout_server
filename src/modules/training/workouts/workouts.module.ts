@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ExerciseSessionOrchestratorModule } from '@training-modules/exerciseSessionOrchestrator/exerciseSessionOrchestrator.module';
 import { WorkoutsService } from './workouts.service';
 import { WorkoutsController } from './workouts.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Workouts } from '@entities/workouts.entity';
 import { WorkoutSplits } from '@entities/workout_splits.entity';
-import { ExerciseSessionOrchestratorModule } from '@training-modules/exerciseSessionOrchestrator/exerciseSessionOrchestrator.module';
 
 @Module({
   providers: [WorkoutsService],
