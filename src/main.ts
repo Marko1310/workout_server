@@ -13,7 +13,7 @@ async function bootstrap() {
   const logger = app.get(Logger);
   const config = app.get(ConfigService);
   const port = config.get<number>('app.port');
-  const clientUrl = config.get<string>('app.client.url');
+  const clientUrl = config.get<string>('app.clientUrl');
 
   app.enableCors({
     credentials: true,

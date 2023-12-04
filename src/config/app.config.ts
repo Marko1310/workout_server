@@ -6,6 +6,7 @@ const appSchema = z.object({
   jwt: z.object({
     secret: z.string(),
   }),
+  clientUrl: z.string(),
 });
 
 export default registerAs('app', () => {
@@ -14,6 +15,7 @@ export default registerAs('app', () => {
     jwt: {
       secret: process.env.JWT_SECRET,
     },
+    clientUrl: process.env.CLIENT_URL,
   });
   return config;
 });
