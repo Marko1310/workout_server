@@ -29,7 +29,11 @@ export class IdentityController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const access_token = await this.identityService.signup(signupDto);
-    res.cookie('access_token', access_token, { httpOnly: true, secure: false });
+    res.cookie('access_token', access_token, {
+      httpOnly: false,
+      secure: false,
+    });
+    return;
   }
 
   @UseGuards(LocalAuthGuard)
@@ -37,7 +41,7 @@ export class IdentityController {
   @Post('login')
   async login(@Res({ passthrough: true }) res: Response, @Request() req) {
     const accessToken = await this.identityService.login(req.user);
-    res.cookie('access_token', accessToken, { httpOnly: true, secure: false });
+    res.cookie('access_token', accessToken, { httpOnly: false, secure: false });
   }
 
   @Get('profile')
