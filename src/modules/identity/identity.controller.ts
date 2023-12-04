@@ -28,25 +28,33 @@ export class IdentityController {
     @Body(new ZodPipe(SignupDtoSchema)) signupDto: SignupDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const access_token = await this.identityService.signup(signupDto);
+    const { access_token, identity } =
+      await this.identityService.signup(signupDto);
     res.cookie('access_token', access_token, {
       httpOnly: false,
       secure: false,
     });
-    return;
+    return { user: identity.id };
   }
 
   @UseGuards(LocalAuthGuard)
   @NoJwtAuth()
   @Post('login')
   async login(@Res({ passthrough: true }) res: Response, @Request() req) {
-    const accessToken = await this.identityService.login(req.user);
-    res.cookie('access_token', accessToken, { httpOnly: false, secure: false });
+    const { access_token, identity } = await this.identityService.login(
+      req.user,
+    );
+    res.cookie('access_token', access_token, {
+      httpOnly: false,
+      secure: false,
+    });
+    return { user: identity.id };
   }
 
   @Get('profile')
   @Permission('read', 'Users')
-  getProfile(@RequestUser() user: RequestUserDto) {
-    return user;
+  async getProfile(@RequestUser() user: RequestUserDto) {
+    console.log(user);
+    return { user: user.id };
   }
 }

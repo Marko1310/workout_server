@@ -16,11 +16,13 @@ export class IdentityService {
 
   async signup(signupDto: SignupDto) {
     const identity = await this.upsertUser(signupDto);
-    return await this.assignAccessToken(identity);
+    const access_token = await this.assignAccessToken(identity);
+    return { access_token, identity };
   }
 
-  async login(identity: any) {
-    return await this.assignAccessToken(identity);
+  async login(identity: Users) {
+    const access_token = await this.assignAccessToken(identity);
+    return { access_token, identity };
   }
 
   private async assignAccessToken(identity: Users) {
