@@ -57,4 +57,9 @@ export class IdentityController {
     console.log(user);
     return { user: user.id };
   }
+
+  @Get('logout')
+  signout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('access_token');
+  }
 }
