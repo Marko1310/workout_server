@@ -25,6 +25,10 @@ export class IdentityService {
     return { access_token, identity };
   }
 
+  async findUser(id: number) {
+    return await this.userService.findOneById(id);
+  }
+
   private async assignAccessToken(identity: Users) {
     const permissions =
       await this.authorizationService.getPermissions(identity);

@@ -34,7 +34,7 @@ export class IdentityController {
       httpOnly: false,
       secure: false,
     });
-    return { user: identity.id };
+    return { id: identity.id, name: identity.name, email: identity.email };
   }
 
   @UseGuards(LocalAuthGuard)
@@ -48,18 +48,28 @@ export class IdentityController {
       httpOnly: false,
       secure: false,
     });
-    return { user: identity.id };
+    return { id: identity.id, name: identity.name, email: identity.email };
   }
 
-  @Get('profile')
+  @Get('me')
   @Permission('read', 'Users')
   async getProfile(@RequestUser() user: RequestUserDto) {
-    console.log(user);
     return { user: user.id };
   }
 
   @Get('logout')
   signout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('access_token');
+  }
+
+  @Get('user')
+  @Permission('read', 'Users')
+  async findUser(@RequestUser() user: RequestUserDto) {
+    const currentUser = await this.identityService.findUser(user.id);
+    return {
+      id: currentUser.id,
+      name: currentUser.name,
+      email: currentUser.email,
+    };
   }
 }

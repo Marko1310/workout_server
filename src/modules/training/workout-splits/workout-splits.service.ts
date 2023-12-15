@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WorkoutSplits } from '@entities/workout_splits.entity';
+import { Sessions } from '@entities/sessions.entity';
 
 @Injectable()
 export class WorkoutSplitsService {
   constructor(
     @InjectRepository(WorkoutSplits)
     private workoutSplitsRepository: Repository<WorkoutSplits>,
+
+    @InjectRepository(Sessions)
+    private sessionRepository: Repository<Sessions>,
   ) {}
 
   async createWorkoutSplit(userId: number, title: string, days: number) {
@@ -36,5 +40,18 @@ export class WorkoutSplitsService {
       relations: ['users'],
       where: { users: { id: userId } },
     });
+  }
+
+  async getCurrenttWorkoutSplit(userId: number) {
+    const latestSession = await this.sessionRepository.findOne({
+      relations: [
+        'exercises',
+        'exercises.workouts',
+        'exercises.workouts.workoutSplits',
+      ],
+      where: { users: { id: userId } },
+      order: { createDateTime: 'DESC' },
+    });
+    return latestSession.exercises.workouts.workoutSplits;
   }
 }
