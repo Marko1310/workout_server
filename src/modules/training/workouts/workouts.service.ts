@@ -37,4 +37,11 @@ export class WorkoutsService {
       where: { users: { id: userId } },
     });
   }
+
+  async getAllFromWorkoutSplit(userId: number, workoutId: number) {
+    return await this.workoutsRepository.find({
+      relations: { users: true },
+      where: { users: { id: userId }, workoutSplits: { id: workoutId } },
+    });
+  }
 }

@@ -63,6 +63,18 @@ export class WorkoutsController {
     return await this.workoutService.getAllByUserId(userId);
   }
 
+  @Get(':userId/:workoutSplitId')
+  @Permission('read', 'Workouts')
+  async getAllWorkoutsInWorkoutSplit(
+    @Param('userId') userId: number,
+    @Param('workoutSplitId') workoutSplitId: number,
+  ) {
+    return await this.workoutService.getAllFromWorkoutSplit(
+      userId,
+      workoutSplitId,
+    );
+  }
+
   @Get('/previous/:workoutId')
   @Permission('read', 'Workouts')
   async getLastWorkout(@Param('workoutId') workoutId: number) {
