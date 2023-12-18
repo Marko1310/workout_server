@@ -34,8 +34,9 @@ export class SessionsService {
   }
 
   async getLastSessionsForExercise(exerciseId: number) {
-    return this.sessionsRepository.findOne({
-      where: { exercises: { id: exerciseId } },
+    const { week, ...rest } = await this.findLastSession(exerciseId);
+    return this.sessionsRepository.find({
+      where: { exercises: { id: exerciseId }, week: week },
       order: { week: 'DESC' },
     });
   }

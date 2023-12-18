@@ -30,23 +30,26 @@ export class WorkoutsService {
   }
 
   async findOne(workoutId: number) {
-    return await this.workoutsRepository.findOne({
+    const { users, ...result } = await this.workoutsRepository.findOne({
       where: { id: workoutId },
     });
+    return result;
   }
 
   async getAllByUserId(userId: number) {
-    return await this.workoutsRepository.find({
+    const workouts = await this.workoutsRepository.find({
       relations: { users: true },
       where: { users: { id: userId } },
     });
+    return workouts.map(({ users, ...result }) => result);
   }
 
-  async getAllFromWorkoutSplit(userId: number, workoutId: number) {
-    return await this.workoutsRepository.find({
+  async getAllFormWorkoutSplit(userId: number, workoutId: number) {
+    const workouts = await this.workoutsRepository.find({
       relations: { users: true },
       where: { users: { id: userId }, workoutSplits: { id: workoutId } },
     });
+    return workouts.map(({ users, ...result }) => result);
   }
 
   async getPreviousWorkout(userId: number) {
@@ -55,6 +58,7 @@ export class WorkoutsService {
       where: { users: { id: userId } },
       order: { createDateTime: 'DESC' },
     });
-    return previousWorkout.exercises.workouts;
+    const { users, ...result } = previousWorkout.exercises.workouts;
+    return result;
   }
 }

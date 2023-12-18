@@ -69,7 +69,7 @@ export class WorkoutsController {
     @Param('userId') userId: number,
     @Param('workoutSplitId') workoutSplitId: number,
   ) {
-    return await this.workoutService.getAllFromWorkoutSplit(
+    return await this.workoutService.getAllFormWorkoutSplit(
       userId,
       workoutSplitId,
     );

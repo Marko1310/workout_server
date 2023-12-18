@@ -30,16 +30,18 @@ export class WorkoutSplitsService {
   }
 
   async findOne(workoutSplitId: number) {
-    return await this.workoutSplitsRepository.findOne({
+    const { users, ...result } = await this.workoutSplitsRepository.findOne({
       where: { id: workoutSplitId },
     });
+    return result;
   }
 
   async getAllByUserId(userId: number) {
-    return await this.workoutSplitsRepository.find({
-      relations: ['users'],
+    const workoutSplits = await this.workoutSplitsRepository.find({
       where: { users: { id: userId } },
+      select: ['users', 'id', 'workout_split_name', 'days'],
     });
+    return workoutSplits.map(({ users, ...result }) => result);
   }
 
   async getCurrentWorkoutSplit(userId: number) {
@@ -52,6 +54,7 @@ export class WorkoutSplitsService {
       where: { users: { id: userId } },
       order: { createDateTime: 'DESC' },
     });
-    return latestSession.exercises.workouts.workoutSplits;
+    const { users, ...result } = latestSession.exercises.workouts.workoutSplits;
+    return result;
   }
 }

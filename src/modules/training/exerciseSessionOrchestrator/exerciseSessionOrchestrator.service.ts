@@ -17,9 +17,11 @@ export class ExerciseSessionOrchestratorService {
       const sessions = await this.sessionsService.getLastSessionsForExercise(
         exercise.id,
       );
+      const sessionsData = sessions.map(({ users, ...results }) => results);
+      const { workouts, users, ...exerciseDetails } = exercise;
       return {
-        ...exercise,
-        sessions,
+        ...exerciseDetails,
+        sessionsData,
       };
     });
 
