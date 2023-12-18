@@ -5,12 +5,13 @@ import { WorkoutsService } from './workouts.service';
 import { WorkoutsController } from './workouts.controller';
 import { Workouts } from '@entities/workouts.entity';
 import { WorkoutSplits } from '@entities/workout_splits.entity';
+import { Sessions } from '@entities/sessions.entity';
 
 @Module({
   providers: [WorkoutsService],
   controllers: [WorkoutsController],
   imports: [
-    TypeOrmModule.forFeature([Workouts, WorkoutSplits]),
+    TypeOrmModule.forFeature([Workouts, WorkoutSplits, Sessions]),
     ExerciseSessionOrchestratorModule,
   ],
 })

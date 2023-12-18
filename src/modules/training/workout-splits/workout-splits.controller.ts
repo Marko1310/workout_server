@@ -63,6 +63,6 @@ export class WorkoutSplitsController {
   @Get('currentWorkoutSplit/:userId')
   @Permission('read', 'WorkoutSplits')
   async getCurrentWorkoutSplit(@Param('userId') userId: number) {
-    return await this.workoutSplitService.getCurrenttWorkoutSplit(userId);
+    return await this.workoutSplitService.getCurrentWorkoutSplit(userId);
   }
 }

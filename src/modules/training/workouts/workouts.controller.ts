@@ -63,7 +63,7 @@ export class WorkoutsController {
     return await this.workoutService.getAllByUserId(userId);
   }
 
-  @Get(':userId/:workoutSplitId')
+  @Get('workoutsForSplit/:userId/:workoutSplitId')
   @Permission('read', 'Workouts')
   async getAllWorkoutsInWorkoutSplit(
     @Param('userId') userId: number,
@@ -75,9 +75,15 @@ export class WorkoutsController {
     );
   }
 
-  @Get('/previous/:workoutId')
+  @Get('previous/:userId')
   @Permission('read', 'Workouts')
-  async getLastWorkout(@Param('workoutId') workoutId: number) {
-    return await this.orchestratorService.getLastWorkoutDetails(workoutId);
+  async getPreviousWorkout(@Param('userId') userId: number) {
+    return await this.workoutService.getPreviousWorkout(userId);
+  }
+
+  @Get('previous/details/:workoutId')
+  @Permission('read', 'Workouts')
+  async getPreviousWorkoutDetails(@Param('workoutId') workoutId: number) {
+    return await this.orchestratorService.getPreviousWorkoutDetails(workoutId);
   }
 }

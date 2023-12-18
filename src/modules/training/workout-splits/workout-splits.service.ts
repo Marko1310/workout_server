@@ -42,7 +42,7 @@ export class WorkoutSplitsService {
     });
   }
 
-  async getCurrenttWorkoutSplit(userId: number) {
+  async getCurrentWorkoutSplit(userId: number) {
     const latestSession = await this.sessionRepository.findOne({
       relations: [
         'exercises',

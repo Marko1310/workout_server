@@ -9,7 +9,7 @@ export class ExerciseSessionOrchestratorService {
     private readonly sessionsService: SessionsService,
   ) {}
 
-  async getLastWorkoutDetails(workoutId: number) {
+  async getPreviousWorkoutDetails(workoutId: number) {
     const allExercises =
       await this.exercisesService.getAllByWorkoutId(workoutId);
 
