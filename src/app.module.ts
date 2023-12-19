@@ -9,7 +9,7 @@ import { JwtAuthGuard } from 'auth/guards/jwt.auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '@users-modules/users.module';
-import { WorkoutSplitsModule } from '@training-modules/workout-splits/workout-splits.module';
+import { ProgramsModule } from '@training-modules/programs/program.module';
 import { WorkoutsModule } from '@training-modules/workouts/workouts.module';
 import { ExercisesModule } from '@training-modules/exercises/exercises.module';
 import { SessionsModule } from '@training-modules/sessions/sessions.module';
@@ -48,7 +48,7 @@ import { IdentityModule } from '@identity-modules/identity.module';
     AuthModule,
     UsersModule,
     IdentityModule,
-    WorkoutSplitsModule,
+    ProgramsModule,
     WorkoutsModule,
     ExercisesModule,
     SessionsModule,

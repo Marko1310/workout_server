@@ -12,7 +12,7 @@ import {
 import { WorkoutsService } from './workouts.service';
 import { AddWorkoutSchema, AddWorkoutDto } from './dto/workout.dto';
 import { ZodPipe } from 'shared/zod.pipe';
-import { WorkoutSplitExistsPipe } from '../workout-splits/pipes/workoutSplitExist.pipe';
+import { ProgramExistsPipe } from '../programs/pipes/programExist.pipe';
 import { WorkoutExistsPipe } from './pipes/workoutExist.pipe';
 import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
 import { hasPermission } from 'shared/auth/authorization';
@@ -28,18 +28,18 @@ export class WorkoutsController {
     private orchestratorService: ExerciseSessionOrchestratorService,
   ) {}
 
-  @Post(':workoutSplitId')
+  @Post(':programId')
   @Permission('create', 'Workouts')
   async createWorkouts(
     @Body(new ZodPipe(AddWorkoutSchema)) addWorkoutDto: AddWorkoutDto,
-    @Param('workoutSplitId', ParseIntPipe, WorkoutSplitExistsPipe)
-    workoutSplitId: number,
+    @Param('programId', ParseIntPipe, ProgramExistsPipe)
+    programId: number,
     @RequestUser() user: RequestUserDto,
   ) {
     const { title } = addWorkoutDto;
     const workout = await this.workoutService.createWorkout(
       user.id,
-      workoutSplitId,
+      programId,
       title,
     );
     return workout;
@@ -63,16 +63,13 @@ export class WorkoutsController {
     return await this.workoutService.getAllByUserId(userId);
   }
 
-  @Get('workoutsForSplit/:userId/:workoutSplitId')
+  @Get('workoutsForProgram/:userId/:programId')
   @Permission('read', 'Workouts')
-  async getAllWorkoutsInWorkoutSplit(
+  async getAllWorkoutsInProgram(
     @Param('userId') userId: number,
-    @Param('workoutSplitId') workoutSplitId: number,
+    @Param('programId') programId: number,
   ) {
-    return await this.workoutService.getAllForWorkoutSplit(
-      userId,
-      workoutSplitId,
-    );
+    return await this.workoutService.getAllForProgram(userId, programId);
   }
 
   @Get('previous/:userId')
@@ -81,9 +78,15 @@ export class WorkoutsController {
     return await this.workoutService.getPreviousWorkout(userId);
   }
 
-  @Get('previous/details/:workoutId')
+  @Get('details/:workoutId/:week')
   @Permission('read', 'Workouts')
-  async getPreviousWorkoutDetails(@Param('workoutId') workoutId: number) {
-    return await this.orchestratorService.getPreviousWorkoutDetails(workoutId);
+  async getPreviousWorkoutDetails(
+    @Param('workoutId') workoutId: number,
+    @Param('week') week: number,
+  ) {
+    return await this.orchestratorService.getWorkoutDetailByWeek(
+      workoutId,
+      week,
+    );
   }
 }

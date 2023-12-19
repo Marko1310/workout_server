@@ -9,14 +9,15 @@ export class ExerciseSessionOrchestratorService {
     private readonly sessionsService: SessionsService,
   ) {}
 
-  async getPreviousWorkoutDetails(workoutId: number) {
+  async getWorkoutDetailByWeek(workoutId: number, week: number) {
     const allExercisesInWorkout =
       await this.exercisesService.getAllByWorkoutId(workoutId);
 
     const exerciseSessionsPromises = allExercisesInWorkout.map(
       async (exercise) => {
-        const sessions = await this.sessionsService.getLastSessionsForExercise(
+        const sessions = await this.sessionsService.getDetailsByWeekForExercise(
           exercise.exercises_id,
+          week,
         );
         const sessionsData = sessions.map(({ users, ...results }) => results);
         const { workouts, users, ...exerciseDetails } = exercise;

@@ -1,4 +1,4 @@
-import { WorkoutSplits } from './workout_splits.entity';
+import { Programs } from './programs.entity';
 import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../shared/database/base.entity';
 import { Workouts } from './workouts.entity';
@@ -34,12 +34,10 @@ export class Users extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  @OneToMany(
-    () => WorkoutSplits,
-    (workoutSplits: WorkoutSplits) => workoutSplits.users,
-    { cascade: ['remove'] },
-  )
-  workoutSplits: WorkoutSplits[];
+  @OneToMany(() => Programs, (programs: Programs) => programs.users, {
+    cascade: ['remove'],
+  })
+  programs: Programs[];
 
   @OneToMany(() => Workouts, (workouts: Workouts) => workouts.users, {
     cascade: ['remove'],

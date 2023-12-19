@@ -14,10 +14,10 @@ export class WorkoutsService {
     private sessionRepository: Repository<Sessions>,
   ) {}
 
-  async createWorkout(userId: number, workoutSplitId: number, title: string) {
+  async createWorkout(userId: number, programId: number, title: string) {
     const newWorkout = this.workoutsRepository.create({
       users: { user_id: userId },
-      workoutSplits: { workout_split_id: workoutSplitId },
+      programs: { programs_id: programId },
       workout_name: title,
     });
     return this.workoutsRepository.save(newWorkout);
@@ -44,12 +44,12 @@ export class WorkoutsService {
     return workouts.map(({ users, ...result }) => result);
   }
 
-  async getAllForWorkoutSplit(userId: number, workoutSplitId: number) {
+  async getAllForProgram(userId: number, programId: number) {
     const workouts = await this.workoutsRepository.find({
       relations: { users: true },
       where: {
         users: { user_id: userId },
-        workoutSplits: { workout_split_id: workoutSplitId },
+        programs: { programs_id: programId },
       },
     });
     return workouts.map(({ users, ...result }) => result);

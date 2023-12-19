@@ -32,9 +32,9 @@ export class AuthorizationService {
     const { can, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
 
     can('read', 'Users');
-    can('create', ['WorkoutSplits', 'Workouts', 'Exercises', 'Sessions']);
-    can('read', ['WorkoutSplits', 'Workouts', 'Exercises', 'Sessions']);
-    can('delete', ['WorkoutSplits', 'Workouts', 'Exercises', 'Sessions'], {
+    can('create', ['Programs', 'Workouts', 'Exercises', 'Sessions']);
+    can('read', ['Programs', 'Workouts', 'Exercises', 'Sessions']);
+    can('delete', ['Programs', 'Workouts', 'Exercises', 'Sessions'], {
       'users.id': identity.user_id,
     });
 

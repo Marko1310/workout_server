@@ -10,25 +10,25 @@ import { BaseEntity } from '../shared/database/base.entity';
 import { Users } from './users.entity';
 import { Workouts } from './workouts.entity';
 
-@Entity({ name: 'workout_splits' })
-export class WorkoutSplits extends BaseEntity {
+@Entity({ name: 'programs' })
+export class Programs extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  workout_split_id: number;
+  programs_id: number;
 
   @Column({ type: 'varchar', length: 300, nullable: false })
-  workout_split_name: string;
+  programs_name: string;
 
   @Column({ nullable: false })
   days: number;
 
-  @ManyToOne(() => Users, (user: Users) => user.workoutSplits, {
+  @ManyToOne(() => Users, (user: Users) => user.programs, {
     onDelete: 'CASCADE',
     eager: true,
   })
   @JoinColumn({ name: 'userId' })
   users: Users;
 
-  @OneToMany(() => Workouts, (workouts: Workouts) => workouts.workoutSplits, {
+  @OneToMany(() => Workouts, (workouts: Workouts) => workouts.programs, {
     cascade: ['remove'],
   })
   workouts: Workouts[];

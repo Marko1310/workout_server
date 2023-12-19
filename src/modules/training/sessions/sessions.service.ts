@@ -33,8 +33,7 @@ export class SessionsService {
     return Promise.all(promises);
   }
 
-  async getLastSessionsForExercise(exerciseId: number) {
-    const { week, ...rest } = (await this.findLastSession(exerciseId)) ?? {};
+  async getDetailsByWeekForExercise(exerciseId: number, week: number) {
     return this.sessionsRepository.find({
       where: { exercises: { exercises_id: exerciseId }, week },
       order: { week: 'DESC' },
