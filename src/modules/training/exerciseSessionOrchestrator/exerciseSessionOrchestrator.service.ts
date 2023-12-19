@@ -10,20 +10,22 @@ export class ExerciseSessionOrchestratorService {
   ) {}
 
   async getPreviousWorkoutDetails(workoutId: number) {
-    const allExercises =
+    const allExercisesInWorkout =
       await this.exercisesService.getAllByWorkoutId(workoutId);
 
-    const exerciseSessionsPromises = allExercises.map(async (exercise) => {
-      const sessions = await this.sessionsService.getLastSessionsForExercise(
-        exercise.id,
-      );
-      const sessionsData = sessions.map(({ users, ...results }) => results);
-      const { workouts, users, ...exerciseDetails } = exercise;
-      return {
-        ...exerciseDetails,
-        sessionsData,
-      };
-    });
+    const exerciseSessionsPromises = allExercisesInWorkout.map(
+      async (exercise) => {
+        const sessions = await this.sessionsService.getLastSessionsForExercise(
+          exercise.exercises_id,
+        );
+        const sessionsData = sessions.map(({ users, ...results }) => results);
+        const { workouts, users, ...exerciseDetails } = exercise;
+        return {
+          ...exerciseDetails,
+          sessionsData,
+        };
+      },
+    );
 
     return await Promise.all(exerciseSessionsPromises);
   }

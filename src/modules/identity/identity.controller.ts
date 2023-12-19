@@ -34,7 +34,7 @@ export class IdentityController {
       httpOnly: false,
       secure: false,
     });
-    return { id: identity.id, name: identity.name, email: identity.email };
+    return { id: identity.user_id, name: identity.name, email: identity.email };
   }
 
   @UseGuards(LocalAuthGuard)
@@ -48,7 +48,7 @@ export class IdentityController {
       httpOnly: false,
       secure: false,
     });
-    return { id: identity.id, name: identity.name, email: identity.email };
+    return { id: identity.user_id, name: identity.name, email: identity.email };
   }
 
   @Get('me')
@@ -67,7 +67,7 @@ export class IdentityController {
   async findUser(@RequestUser() user: RequestUserDto) {
     const currentUser = await this.identityService.findUser(user.id);
     return {
-      id: currentUser.id,
+      id: currentUser.user_id,
       name: currentUser.name,
       email: currentUser.email,
     };

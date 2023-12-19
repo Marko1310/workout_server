@@ -18,8 +18,8 @@ export class ExercisesService {
     goalReps: number,
   ) {
     const newExercise = this.exercisesRepository.create({
-      users: { id: userId },
-      workouts: { id: workoutId },
+      users: { user_id: userId },
+      workouts: { workouts_id: workoutId },
       exercise_name: title,
       goal_sets: goalSets,
       goal_reps: goalReps,
@@ -29,20 +29,20 @@ export class ExercisesService {
 
   async deleteExercise(exerciseId: number) {
     return await this.exercisesRepository.delete({
-      id: exerciseId,
+      exercises_id: exerciseId,
     });
   }
 
   async findOne(exerciseId: number) {
     return await this.exercisesRepository.findOne({
-      where: { id: exerciseId },
+      where: { exercises_id: exerciseId },
     });
   }
 
   async getAllByWorkoutId(workoutId: number) {
     return await this.exercisesRepository.find({
       relations: ['workouts'],
-      where: { workouts: { id: workoutId } },
+      where: { workouts: { workouts_id: workoutId } },
     });
   }
 }

@@ -19,7 +19,7 @@ export class sessionExistPipe implements PipeTransform {
   async transform(value: number, metadata: ArgumentMetadata) {
     const session = await this.sessions.findOne({
       where: {
-        id: value,
+        exercises_id: value,
       },
     });
 

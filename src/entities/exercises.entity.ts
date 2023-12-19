@@ -1,4 +1,11 @@
-import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BaseEntity } from '../shared/database/base.entity';
 import { Sessions } from './sessions.entity';
 import { Workouts } from './workouts.entity';
@@ -6,6 +13,9 @@ import { Users } from './users.entity';
 
 @Entity({ name: 'exercises' })
 export class Exercises extends BaseEntity {
+  @PrimaryGeneratedColumn('increment')
+  exercises_id: number;
+
   @Column({ type: 'varchar', length: 300, nullable: false })
   exercise_name: string;
 
@@ -25,6 +35,7 @@ export class Exercises extends BaseEntity {
   @ManyToOne(() => Workouts, (workouts: Workouts) => workouts.exercises, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'workoutsId' })
   workouts: Workouts;
 
   @OneToMany(() => Sessions, (sessions: Sessions) => sessions.exercises, {

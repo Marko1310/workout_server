@@ -1,10 +1,19 @@
 import { BaseEntity } from '../shared/database/base.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exercises } from './exercises.entity';
 import { Users } from './users.entity';
 
 @Entity({ name: 'sessions' })
 export class Sessions extends BaseEntity {
+  @PrimaryGeneratedColumn('increment')
+  sessions_id: number;
+
   @Column({ nullable: false })
   set: number;
 
@@ -27,5 +36,6 @@ export class Sessions extends BaseEntity {
   @ManyToOne(() => Exercises, (exercises: Exercises) => exercises.sessions, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'exercisesId' })
   exercises: Exercises;
 }

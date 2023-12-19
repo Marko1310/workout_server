@@ -18,7 +18,7 @@ export class exerciseExistPipe implements PipeTransform {
   async transform(value: number, metadata: ArgumentMetadata) {
     const exercise = await this.exercises.findOne({
       where: {
-        id: value,
+        exercises_id: value,
       },
     });
 

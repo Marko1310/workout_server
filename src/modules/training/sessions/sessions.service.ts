@@ -34,18 +34,19 @@ export class SessionsService {
   }
 
   async getLastSessionsForExercise(exerciseId: number) {
-    const { week, ...rest } = await this.findLastSession(exerciseId);
+    const { week, ...rest } = (await this.findLastSession(exerciseId)) ?? {};
     return this.sessionsRepository.find({
-      where: { exercises: { id: exerciseId }, week: week },
+      where: { exercises: { exercises_id: exerciseId }, week },
       order: { week: 'DESC' },
     });
   }
 
   private async findLastSession(exerciseId: number) {
-    return this.sessionsRepository.findOne({
-      where: { exercises: { id: exerciseId } },
+    const lastSession = this.sessionsRepository.findOne({
+      where: { exercises: { exercises_id: exerciseId } },
       order: { week: 'DESC' },
     });
+    return lastSession;
   }
 
   private async createNewSession(
@@ -56,8 +57,8 @@ export class SessionsService {
     lastSession: SetDto,
   ) {
     return this.sessionsRepository.create({
-      users: { id: userId },
-      exercises: { id: exerciseId },
+      users: { user_id: userId },
+      exercises: { exercises_id: exerciseId },
       set: index + 1,
       weight: set.weight,
       reps: set.reps,

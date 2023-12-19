@@ -19,7 +19,7 @@ export class UsersService {
   }
 
   async findOneById(id: number): Promise<Users | null> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOneBy({ user_id: id });
   }
 
   async create(name: string, email: string, hashedPassword: string) {

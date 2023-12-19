@@ -16,7 +16,7 @@ export class WorkoutSplitsService {
 
   async createWorkoutSplit(userId: number, title: string, days: number) {
     const newWorkoutSplit = this.workoutSplitsRepository.create({
-      users: { id: userId },
+      users: { user_id: userId },
       workout_split_name: title,
       days,
     });
@@ -25,21 +25,21 @@ export class WorkoutSplitsService {
 
   async deleteWorkoutSplit(workoutSplitId: number) {
     return await this.workoutSplitsRepository.delete({
-      id: workoutSplitId,
+      workout_split_id: workoutSplitId,
     });
   }
 
   async findOne(workoutSplitId: number) {
     const { users, ...result } = await this.workoutSplitsRepository.findOne({
-      where: { id: workoutSplitId },
+      where: { workout_split_id: workoutSplitId },
     });
     return result;
   }
 
   async getAllByUserId(userId: number) {
     const workoutSplits = await this.workoutSplitsRepository.find({
-      where: { users: { id: userId } },
-      select: ['users', 'id', 'workout_split_name', 'days'],
+      where: { users: { user_id: userId } },
+      select: ['users', 'workout_split_id', 'workout_split_name', 'days'],
     });
     return workoutSplits.map(({ users, ...result }) => result);
   }
@@ -51,10 +51,11 @@ export class WorkoutSplitsService {
         'exercises.workouts',
         'exercises.workouts.workoutSplits',
       ],
-      where: { users: { id: userId } },
+      where: { users: { user_id: userId } },
       order: { createDateTime: 'DESC' },
     });
-    const { users, ...result } = latestSession.exercises.workouts.workoutSplits;
+    const { users, ...result } =
+      latestSession?.exercises?.workouts?.workoutSplits || {};
     return result;
   }
 }

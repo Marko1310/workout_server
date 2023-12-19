@@ -32,7 +32,7 @@ export class IdentityService {
   private async assignAccessToken(identity: Users) {
     const permissions =
       await this.authorizationService.getPermissions(identity);
-    const payload = { permissions, subject: String(identity.id) };
+    const payload = { permissions, subject: String(identity.user_id) };
     const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;
   }

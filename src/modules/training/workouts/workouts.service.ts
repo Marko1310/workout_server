@@ -16,8 +16,8 @@ export class WorkoutsService {
 
   async createWorkout(userId: number, workoutSplitId: number, title: string) {
     const newWorkout = this.workoutsRepository.create({
-      users: { id: userId },
-      workoutSplits: { id: workoutSplitId },
+      users: { user_id: userId },
+      workoutSplits: { workout_split_id: workoutSplitId },
       workout_name: title,
     });
     return this.workoutsRepository.save(newWorkout);
@@ -25,13 +25,13 @@ export class WorkoutsService {
 
   async deleteWorkout(workoutId: number) {
     return await this.workoutsRepository.delete({
-      id: workoutId,
+      workouts_id: workoutId,
     });
   }
 
   async findOne(workoutId: number) {
     const { users, ...result } = await this.workoutsRepository.findOne({
-      where: { id: workoutId },
+      where: { workouts_id: workoutId },
     });
     return result;
   }
@@ -39,15 +39,18 @@ export class WorkoutsService {
   async getAllByUserId(userId: number) {
     const workouts = await this.workoutsRepository.find({
       relations: { users: true },
-      where: { users: { id: userId } },
+      where: { users: { user_id: userId } },
     });
     return workouts.map(({ users, ...result }) => result);
   }
 
-  async getAllFormWorkoutSplit(userId: number, workoutId: number) {
+  async getAllForWorkoutSplit(userId: number, workoutSplitId: number) {
     const workouts = await this.workoutsRepository.find({
       relations: { users: true },
-      where: { users: { id: userId }, workoutSplits: { id: workoutId } },
+      where: {
+        users: { user_id: userId },
+        workoutSplits: { workout_split_id: workoutSplitId },
+      },
     });
     return workouts.map(({ users, ...result }) => result);
   }
@@ -55,10 +58,11 @@ export class WorkoutsService {
   async getPreviousWorkout(userId: number) {
     const previousWorkout = await this.sessionRepository.findOne({
       relations: ['exercises', 'exercises.workouts'],
-      where: { users: { id: userId } },
+      where: { users: { user_id: userId } },
       order: { createDateTime: 'DESC' },
     });
-    const { users, ...result } = previousWorkout.exercises.workouts;
-    return result;
+    const { week } = previousWorkout ?? {};
+    const { users, ...result } = previousWorkout?.exercises?.workouts || {};
+    return { result, week };
   }
 }

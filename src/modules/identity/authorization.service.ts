@@ -35,7 +35,7 @@ export class AuthorizationService {
     can('create', ['WorkoutSplits', 'Workouts', 'Exercises', 'Sessions']);
     can('read', ['WorkoutSplits', 'Workouts', 'Exercises', 'Sessions']);
     can('delete', ['WorkoutSplits', 'Workouts', 'Exercises', 'Sessions'], {
-      'users.id': identity.id,
+      'users.id': identity.user_id,
     });
 
     const ability = build();

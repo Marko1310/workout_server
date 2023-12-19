@@ -1,5 +1,5 @@
 import { WorkoutSplits } from './workout_splits.entity';
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../shared/database/base.entity';
 import { Workouts } from './workouts.entity';
 import { Exercises } from './exercises.entity';
@@ -14,6 +14,9 @@ export type Role = (typeof Role)[keyof typeof Role];
 
 @Entity({ name: 'users' })
 export class Users extends BaseEntity {
+  @PrimaryGeneratedColumn('increment')
+  user_id: number;
+
   @Column({ type: 'varchar', length: 300, nullable: false })
   name: string;
 

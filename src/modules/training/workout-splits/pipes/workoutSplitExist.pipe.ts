@@ -18,7 +18,7 @@ export class WorkoutSplitExistsPipe implements PipeTransform {
   async transform(value: number, metadata: ArgumentMetadata) {
     const workoutSplit = await this.workoutSplits.findOne({
       where: {
-        id: value,
+        workout_split_id: value,
       },
     });
 
