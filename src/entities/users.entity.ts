@@ -4,6 +4,7 @@ import { BaseEntity } from '../shared/database/base.entity';
 import { Workouts } from './workouts.entity';
 import { Exercises } from './exercises.entity';
 import { Sessions } from './sessions.entity';
+import { WorkoutsLog } from './workoutsLog.entity';
 
 export const Role = {
   ADMIN: 'admin',
@@ -53,4 +54,13 @@ export class Users extends BaseEntity {
     cascade: ['remove'],
   })
   sessions: Sessions[];
+
+  @OneToMany(
+    () => WorkoutsLog,
+    (workoutsLog: WorkoutsLog) => workoutsLog.users,
+    {
+      cascade: ['remove'],
+    },
+  )
+  workoutsLog: WorkoutsLog[];
 }

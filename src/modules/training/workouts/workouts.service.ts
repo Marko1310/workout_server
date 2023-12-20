@@ -61,8 +61,8 @@ export class WorkoutsService {
       where: { users: { user_id: userId } },
       order: { createDateTime: 'DESC' },
     });
-    const { week } = previousWorkout ?? {};
+    // const { week } = previousWorkout ?? {};
     const { users, ...result } = previousWorkout?.exercises?.workouts || {};
-    return { result, week };
+    // return { result, week };
   }
 }

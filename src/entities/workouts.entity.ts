@@ -10,6 +10,7 @@ import { BaseEntity } from '../shared/database/base.entity';
 import { Programs } from './programs.entity';
 import { Exercises } from './exercises.entity';
 import { Users } from './users.entity';
+import { WorkoutsLog } from './workoutsLog.entity';
 
 @Entity({ name: 'workouts' })
 export class Workouts extends BaseEntity {
@@ -36,4 +37,13 @@ export class Workouts extends BaseEntity {
     cascade: ['remove'],
   })
   exercises: Exercises[];
+
+  @OneToMany(
+    () => WorkoutsLog,
+    (workoutsLog: WorkoutsLog) => workoutsLog.workouts,
+    {
+      cascade: ['remove'],
+    },
+  )
+  workoutsLog: WorkoutsLog[];
 }

@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Exercises } from './exercises.entity';
 import { Users } from './users.entity';
+import { WorkoutsLog } from './workoutsLog.entity';
 
 @Entity({ name: 'sessions' })
 export class Sessions extends BaseEntity {
@@ -23,9 +24,6 @@ export class Sessions extends BaseEntity {
   @Column({ nullable: false })
   reps: number;
 
-  @Column({ nullable: false })
-  week: number;
-
   @ManyToOne(() => Users, (user: Users) => user.programs, {
     onDelete: 'CASCADE',
     eager: true,
@@ -38,4 +36,14 @@ export class Sessions extends BaseEntity {
   })
   @JoinColumn({ name: 'exercisesId' })
   exercises: Exercises;
+
+  @ManyToOne(
+    () => WorkoutsLog,
+    (workoutsLog: WorkoutsLog) => workoutsLog.sessions,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
+  @JoinColumn({ name: 'workoutsLogId' })
+  workoutsLog: WorkoutsLog;
 }

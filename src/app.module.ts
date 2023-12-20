@@ -14,6 +14,8 @@ import { WorkoutsModule } from '@training-modules/workouts/workouts.module';
 import { ExercisesModule } from '@training-modules/exercises/exercises.module';
 import { SessionsModule } from '@training-modules/sessions/sessions.module';
 import { IdentityModule } from '@identity-modules/identity.module';
+import { WorkoutsLogSessionOrchestratorModule } from './workouts-log-session-orchestrator/workouts-log-session-orchestrator.module';
+import { WorkoutsLogModule } from './workouts-log/workouts-log.module';
 
 @Module({
   imports: [
@@ -52,6 +54,8 @@ import { IdentityModule } from '@identity-modules/identity.module';
     WorkoutsModule,
     ExercisesModule,
     SessionsModule,
+    WorkoutsLogSessionOrchestratorModule,
+    WorkoutsLogModule,
   ],
   controllers: [],
   providers: [
