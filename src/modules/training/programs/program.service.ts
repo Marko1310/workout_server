@@ -30,20 +30,19 @@ export class ProgramsService {
   }
 
   async findOne(programId: number) {
-    const { users, ...result } = await this.programRepository.findOne({
+    return await this.programRepository.findOne({
       where: { programs_id: programId },
     });
-    return result;
   }
 
   async getAllByUserId(userId: number) {
-    const programs = await this.programRepository.find({
+    return await this.programRepository.find({
       where: { users: { user_id: userId } },
       select: ['users', 'programs_id', 'programs_name', 'days'],
     });
-    return programs.map(({ users, ...result }) => result);
   }
 
+  //TODO: change
   async getCurrentProgram(userId: number) {
     const latestSession = await this.sessionRepository.findOne({
       relations: [
@@ -54,8 +53,7 @@ export class ProgramsService {
       where: { users: { user_id: userId } },
       order: { createDateTime: 'DESC' },
     });
-    const { users, ...result } =
-      latestSession?.exercises?.workouts?.programs || {};
-    return result;
+
+    return latestSession?.exercises?.workouts?.programs || {};
   }
 }
