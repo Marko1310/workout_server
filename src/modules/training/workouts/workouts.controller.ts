@@ -18,15 +18,11 @@ import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
 import { hasPermission } from 'shared/auth/authorization';
 import { RequestUser } from '@users-modules/decorator/requestUser.decorator';
 import { RequestUserDto } from '@users-modules/dto/request-user.dto';
-import { ExerciseSessionOrchestratorService } from '@training-modules/exerciseSessionOrchestrator/exerciseSessionOrchestrator.service';
 
 @Controller('workouts')
 @UseGuards(PermissionGuard)
 export class WorkoutsController {
-  constructor(
-    private workoutService: WorkoutsService,
-    private orchestratorService: ExerciseSessionOrchestratorService,
-  ) {}
+  constructor(private workoutService: WorkoutsService) {}
 
   @Post(':programId')
   @Permission('create', 'Workouts')
@@ -84,7 +80,7 @@ export class WorkoutsController {
     @Param('workoutId') workoutId: number,
     @Param('week') week: number,
   ) {
-    return await this.orchestratorService.getWorkoutDetailByWeek(
+    return await this.workoutService.getAllWithExercisesAndSessionsByWeek(
       workoutId,
       week,
     );

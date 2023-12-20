@@ -37,13 +37,6 @@ export class SessionsService {
     return createdSessions;
   }
 
-  async getDetailsByWeekForExercise(exerciseId: number, week: number) {
-    return this.sessionsRepository.find({
-      // where: { exercises: { exercises_id: exerciseId }, week },
-      // order: { week: 'DESC' },
-    });
-  }
-
   private async createNewSession(
     userId: number,
     workoutLogId: number,

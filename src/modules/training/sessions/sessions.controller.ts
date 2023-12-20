@@ -42,7 +42,6 @@ export class SessionsController {
       workoutLog.workouts_log_id,
       exercisesData,
     );
-    console.log(session);
     return session;
   }
 }

@@ -28,7 +28,6 @@ export class Workouts extends BaseEntity {
 
   @ManyToOne(() => Users, (user: Users) => user.programs, {
     onDelete: 'CASCADE',
-    eager: true,
   })
   @JoinColumn({ name: 'userId' })
   users: Users;

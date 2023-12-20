@@ -72,4 +72,23 @@ export class WorkoutsService {
       workouts,
     };
   }
+
+  async getAllWithExercisesAndSessionsByWeek(workoutId: number, week: number) {
+    const workoutLogForWeek = await this.workoutLogRepository.findOne({
+      where: { workouts: { workouts_id: workoutId }, week: week },
+    });
+    const workoutsLogId = workoutLogForWeek?.workouts_log_id;
+
+    const workout = await this.workoutsRepository
+      .createQueryBuilder('workout')
+      .leftJoinAndSelect('workout.exercises', 'exercise')
+      .leftJoinAndSelect('exercise.sessions', 'session')
+      .where('workout.workouts_id = :workoutId', { workoutId })
+      .andWhere('session.workoutsLog.workouts_log_id = :workoutsLogId', {
+        workoutsLogId,
+      })
+      .getMany();
+
+    return workout;
+  }
 }
