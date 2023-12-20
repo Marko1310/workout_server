@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Workouts } from '@entities/workouts.entity';
-import { Sessions } from '@entities/sessions.entity';
+import { WorkoutsLog } from '@entities/workoutsLog.entity';
 
 @Injectable()
 export class WorkoutsService {
@@ -10,8 +10,8 @@ export class WorkoutsService {
     @InjectRepository(Workouts)
     private workoutsRepository: Repository<Workouts>,
 
-    @InjectRepository(Sessions)
-    private sessionRepository: Repository<Sessions>,
+    @InjectRepository(WorkoutsLog)
+    private workoutLogRepository: Repository<WorkoutsLog>,
   ) {}
 
   async createWorkout(userId: number, programId: number, title: string) {
@@ -56,13 +56,20 @@ export class WorkoutsService {
   }
 
   async getPreviousWorkout(userId: number) {
-    const previousWorkout = await this.sessionRepository.findOne({
-      relations: ['exercises', 'exercises.workouts'],
+    const previousWorkout = await this.workoutLogRepository.findOne({
+      relations: ['workouts'],
       where: { users: { user_id: userId } },
-      order: { createDateTime: 'DESC' },
+      order: { week: 'DESC' },
     });
-    // const { week } = previousWorkout ?? {};
-    const { users, ...result } = previousWorkout?.exercises?.workouts || {};
-    // return { result, week };
+    const {
+      users: user,
+      workouts: { users, ...workouts },
+      ...result
+    } = previousWorkout;
+
+    return {
+      ...result,
+      workouts,
+    };
   }
 }
