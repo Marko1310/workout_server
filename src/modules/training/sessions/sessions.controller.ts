@@ -13,11 +13,15 @@ import { WorkoutExistsPipe } from '@training-modules/workouts/pipes/workoutExist
 import { Permission, PermissionGuard } from 'shared/auth/permission.guard';
 import { RequestUser } from '@users-modules/decorator/requestUser.decorator';
 import { RequestUserDto } from '@users-modules/dto/request-user.dto';
+import { WorkoutsLogService } from 'workouts-log/workouts-log.service';
 
 @Controller('sessions')
 @UseGuards(PermissionGuard)
 export class SessionsController {
-  constructor(private sessionsService: SessionsService) {}
+  constructor(
+    private sessionsService: SessionsService,
+    private workoutsLogService: WorkoutsLogService,
+  ) {}
 
   @Post(':workoutId')
   @Permission('create', 'Sessions')
@@ -27,10 +31,18 @@ export class SessionsController {
     @RequestUser() user: RequestUserDto,
   ) {
     const { exercisesData } = addSessionDto;
+
+    const workoutLog = await this.workoutsLogService.createWorkoutLog(
+      user.id,
+      workoutId,
+    );
+
     const session = await this.sessionsService.createSession(
       user.id,
+      workoutLog.workouts_log_id,
       exercisesData,
     );
+    console.log(session);
     return session;
   }
 }

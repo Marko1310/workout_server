@@ -16,7 +16,7 @@ export class WorkoutsLogService {
     const workoutLog = this.workoutsLogRepository.create({
       users: { user_id: userId },
       workouts: { workouts_id: workoutId },
-      week: previousWeek + 1,
+      week: previousWeek ? previousWeek + 1 : 1,
     });
     return await this.workoutsLogRepository.save(workoutLog);
   }
@@ -26,6 +26,6 @@ export class WorkoutsLogService {
       where: { workouts: { workouts_id: workoutId } },
       order: { week: 'DESC' },
     });
-    return previousWeek.week;
+    return previousWeek?.week;
   }
 }

@@ -11,24 +11,13 @@ export class SessionsService {
     private sessionsRepository: Repository<Sessions>,
   ) {}
 
-  async createSession(userId: number, sessionData: SessionArrayDto) {
-    // const promises = sessionData.flatMap(async (session) => {
-    //   const { exerciseId, sets } = session;
-
-    //   return await Promise.all(
-    //     sets.map(async (set, index) => {
-    //       const newSession = await this.createNewSession(
-    //         userId,
-    //         exerciseId,
-    //         index,
-    //         set,
-    //       );
-    //       return this.sessionsRepository.save(newSession);
-    //     }),
-    //   );
-    // });
-
-    // return Promise.all(promises);
+  async createSession(
+    userId: number,
+    workoutLogId: number,
+    sessionData: SessionArrayDto,
+  ) {
+    const createdSessions = [];
+    //TODO: implement INSERT
     for (const session of sessionData) {
       const { exerciseId, sets } = session;
 
@@ -36,13 +25,16 @@ export class SessionsService {
         const set = sets[index];
         const newSession = await this.createNewSession(
           userId,
+          workoutLogId,
           exerciseId,
           index,
           set,
         );
-        await this.sessionsRepository.save(newSession);
+        const createdSession = await this.sessionsRepository.save(newSession);
+        createdSessions.push(createdSession);
       }
     }
+    return createdSessions;
   }
 
   async getDetailsByWeekForExercise(exerciseId: number, week: number) {
@@ -54,12 +46,14 @@ export class SessionsService {
 
   private async createNewSession(
     userId: number,
+    workoutLogId: number,
     exerciseId: number,
     index: number,
     set: SetDto,
   ) {
     return this.sessionsRepository.create({
       users: { user_id: userId },
+      workoutsLog: { workouts_log_id: workoutLogId },
       exercises: { exercises_id: exerciseId },
       set: index + 1,
       weight: set.weight,
