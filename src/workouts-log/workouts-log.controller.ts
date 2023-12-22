@@ -1,7 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import { Permission } from 'shared/auth/permission.guard';
+import { WorkoutsLogService } from './workouts-log.service';
 
 //TODO: guards and persmissions
-@Controller('workouts-log')
+@Controller('workout-logs')
 export class WorkoutsLogController {
-  constructor() {}
+  constructor(private workoutLogsService: WorkoutsLogService) {}
+
+  @Get(':userId')
+  @Permission('read', 'Workouts')
+  async getAllWorkouts(@Param('userId') userId: number) {
+    return await this.workoutLogsService.getAllWorkoutLogs(userId);
+  }
 }

@@ -21,6 +21,12 @@ export class WorkoutsLogService {
     return await this.workoutsLogRepository.save(workoutLog);
   }
 
+  async getAllWorkoutLogs(userId: number) {
+    return await this.workoutsLogRepository.find({
+      where: { users: { user_id: userId } },
+    });
+  }
+
   private async findPreviousWeek(workoutId: number) {
     const previousWeek = await this.workoutsLogRepository.findOne({
       where: { workouts: { workouts_id: workoutId } },
