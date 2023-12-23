@@ -1,7 +1,7 @@
 import { WorkoutsLog } from '@entities/workoutsLog.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 
 @Injectable()
 export class WorkoutsLogService {
@@ -21,9 +21,15 @@ export class WorkoutsLogService {
     return await this.workoutsLogRepository.save(workoutLog);
   }
 
-  async getAllWorkoutLogs(userId: number) {
+  async getAllWorkoutLogsByYear(userId: number, year: number) {
+    const startOfYear = new Date(year, 0, 1);
+    const endOfYear = new Date(year, 11, 31, 23, 59, 59);
+
     return await this.workoutsLogRepository.find({
-      where: { users: { user_id: userId } },
+      where: {
+        users: { user_id: userId },
+        createDateTime: Between(startOfYear, endOfYear),
+      },
     });
   }
 

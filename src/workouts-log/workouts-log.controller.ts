@@ -7,9 +7,12 @@ import { WorkoutsLogService } from './workouts-log.service';
 export class WorkoutsLogController {
   constructor(private workoutLogsService: WorkoutsLogService) {}
 
-  @Get(':userId')
+  @Get(':userId/:year')
   @Permission('read', 'Workouts')
-  async getAllWorkouts(@Param('userId') userId: number) {
-    return await this.workoutLogsService.getAllWorkoutLogs(userId);
+  async getAllWorkouts(
+    @Param('userId') userId: number,
+    @Param('year') year: number,
+  ) {
+    return await this.workoutLogsService.getAllWorkoutLogsByYear(userId, year);
   }
 }
