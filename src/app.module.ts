@@ -40,7 +40,7 @@ import { WorkoutsLogModule } from './workouts-log/workouts-log.module';
       useFactory(config: ConfigService) {
         return {
           secret: config.get('app.jwt.secret'),
-          signOptions: { expiresIn: '1h', issuer: 'workout' },
+          signOptions: { expiresIn: '7d', issuer: 'workout' },
         };
       },
       inject: [ConfigService],

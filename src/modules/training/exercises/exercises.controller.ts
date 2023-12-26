@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   ForbiddenException,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -52,5 +53,12 @@ export class ExercisesController {
       throw new ForbiddenException();
     }
     return await this.exerciseService.deleteExercise(exerciseId);
+  }
+
+  @Get(':workoutId')
+  async getAllExercises(
+    @Param('workoutId', ParseIntPipe, WorkoutExistsPipe) workoutId: number,
+  ) {
+    return await this.exerciseService.getAllByWorkoutId(workoutId);
   }
 }

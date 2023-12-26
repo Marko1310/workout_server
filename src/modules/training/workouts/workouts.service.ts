@@ -54,7 +54,7 @@ export class WorkoutsService {
     return await this.workoutLogRepository.findOne({
       relations: ['workouts'],
       where: { users: { user_id: userId } },
-      order: { week: 'DESC' },
+      order: { createDateTime: 'DESC' },
     });
   }
 
