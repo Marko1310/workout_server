@@ -37,8 +37,10 @@ export class ProgramsService {
 
   async getAllByUserId(userId: number) {
     return await this.programRepository.find({
+      relations: ['workouts'],
       where: { users: { user_id: userId } },
       select: ['users', 'programs_id', 'programs_name', 'days'],
+      order: { createDateTime: 'ASC' },
     });
   }
 
