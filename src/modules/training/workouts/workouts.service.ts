@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Workouts } from '@entities/workouts.entity';
 import { WorkoutsLog } from '@entities/workoutsLog.entity';
+import { AddNewWorkoutDto } from './dto/workout.dto';
+import { Exercises } from '@entities/exercises.entity';
 
 @Injectable()
 export class WorkoutsService {
@@ -12,6 +14,11 @@ export class WorkoutsService {
 
     @InjectRepository(WorkoutsLog)
     private workoutLogRepository: Repository<WorkoutsLog>,
+
+    @InjectRepository(Exercises)
+    private exerciseRepository: Repository<Exercises>,
+
+    private readonly entityManager: EntityManager,
   ) {}
 
   async createWorkout(userId: number, programId: number, title: string) {
@@ -21,6 +28,44 @@ export class WorkoutsService {
       workout_name: title,
     });
     return this.workoutsRepository.save(newWorkout);
+  }
+
+  async createNewWorkout(
+    userId: number,
+    programId: number,
+    workoutData: AddNewWorkoutDto,
+  ) {
+    const result = await this.entityManager.transaction(
+      async (entityManager) => {
+        try {
+          const workout = this.workoutsRepository.create({
+            users: { user_id: userId },
+            programs: { programs_id: programId },
+            workout_name: workoutData.title,
+          });
+          const savedWorkout = await entityManager.save(workout);
+
+          const exercisesPromises = workoutData.exercises.map(
+            async (exerciseData) => {
+              const exercise = this.exerciseRepository.create({
+                users: { user_id: userId },
+                workouts: { workouts_id: savedWorkout.workouts_id },
+                exercise_name: exerciseData.title,
+                goal_sets: exerciseData.goalSets,
+                goal_reps: exerciseData.goalReps,
+              });
+              return entityManager.save(exercise);
+            },
+          );
+          const createdExercises = await Promise.all(exercisesPromises);
+
+          return { workout: savedWorkout, exercises: createdExercises };
+        } catch (error) {
+          throw error;
+        }
+      },
+    );
+    return result;
   }
 
   async deleteWorkout(workoutId: number) {

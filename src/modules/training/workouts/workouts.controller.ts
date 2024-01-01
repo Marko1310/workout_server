@@ -10,7 +10,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
-import { AddWorkoutSchema, AddWorkoutDto } from './dto/workout.dto';
+import {
+  AddWorkoutSchema,
+  AddWorkoutDto,
+  AddNewWorkoutSchema,
+  AddNewWorkoutDto,
+} from './dto/workout.dto';
 import { ZodPipe } from 'shared/zod.pipe';
 import { ProgramExistsPipe } from '../programs/pipes/programExist.pipe';
 import { WorkoutExistsPipe } from './pipes/workoutExist.pipe';
@@ -39,6 +44,23 @@ export class WorkoutsController {
       title,
     );
     return workout;
+  }
+
+  @Post('workout/:programId')
+  @Permission('create', 'Workouts')
+  async createNeWWorkout(
+    @Body(new ZodPipe(AddNewWorkoutSchema)) workoutData: AddNewWorkoutDto,
+    @Param('programId', ParseIntPipe, ProgramExistsPipe)
+    programId: number,
+    @RequestUser() user: RequestUserDto,
+  ) {
+    const newWorkout = await this.workoutService.createNewWorkout(
+      user.id,
+      programId,
+      workoutData,
+    );
+    console.log(newWorkout);
+    return newWorkout;
   }
 
   @Delete(':workoutId')
