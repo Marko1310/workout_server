@@ -21,45 +21,32 @@ export class WorkoutsService {
     private readonly entityManager: EntityManager,
   ) {}
 
-  async createWorkout(userId: number, programId: number, title: string) {
-    const newWorkout = this.workoutsRepository.create({
-      users: { user_id: userId },
-      programs: { programs_id: programId },
-      workout_name: title,
-    });
-    return this.workoutsRepository.save(newWorkout);
-  }
-
-  async createNewWorkout(
+  async createWorkoutWithExercises(
     userId: number,
     programId: number,
     workoutData: AddNewWorkoutDto,
   ) {
+    const { title, exercises } = workoutData;
+
     const result = await this.entityManager.transaction(
       async (entityManager) => {
         try {
-          const workout = this.workoutsRepository.create({
-            users: { user_id: userId },
-            programs: { programs_id: programId },
-            workout_name: workoutData.title,
-          });
+          const workout = await this.newWorkout(userId, programId, title);
           const savedWorkout = await entityManager.save(workout);
 
-          const exercisesPromises = workoutData.exercises.map(
-            async (exerciseData) => {
-              const exercise = this.exerciseRepository.create({
-                users: { user_id: userId },
-                workouts: { workouts_id: savedWorkout.workouts_id },
-                exercise_name: exerciseData.title,
-                goal_sets: exerciseData.goalSets,
-                goal_reps: exerciseData.goalReps,
-              });
-              return entityManager.save(exercise);
-            },
-          );
-          const createdExercises = await Promise.all(exercisesPromises);
+          const exercisesPromises = exercises.map(async (exerciseData) => {
+            const exercise = await this.newExercise(
+              userId,
+              savedWorkout.workouts_id,
+              title,
+              exerciseData.goalSets,
+              exerciseData.goalReps,
+            );
+            return entityManager.save(exercise);
+          });
+          const savedExercises = await Promise.all(exercisesPromises);
 
-          return { workout: savedWorkout, exercises: createdExercises };
+          return { workout: savedWorkout, exercises: savedExercises };
         } catch (error) {
           throw error;
         }
@@ -120,5 +107,31 @@ export class WorkoutsService {
       .getMany();
 
     return workout;
+  }
+
+  private async newWorkout(userId: number, programId: number, title: string) {
+    const newWorkout = this.workoutsRepository.create({
+      users: { user_id: userId },
+      programs: { programs_id: programId },
+      workout_name: title,
+    });
+    return await this.workoutsRepository.save(newWorkout);
+  }
+
+  private async newExercise(
+    userId: number,
+    workoutId: number,
+    exercise_name: string,
+    goal_sets: number,
+    goal_reps: number,
+  ) {
+    const newExercise = this.exerciseRepository.create({
+      users: { user_id: userId },
+      workouts: { workouts_id: workoutId },
+      exercise_name,
+      goal_sets,
+      goal_reps,
+    });
+    return await this.exerciseRepository.save(newExercise);
   }
 }

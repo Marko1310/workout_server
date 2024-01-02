@@ -31,35 +31,17 @@ export class WorkoutsController {
 
   @Post(':programId')
   @Permission('create', 'Workouts')
-  async createWorkouts(
-    @Body(new ZodPipe(AddWorkoutSchema)) addWorkoutDto: AddWorkoutDto,
-    @Param('programId', ParseIntPipe, ProgramExistsPipe)
-    programId: number,
-    @RequestUser() user: RequestUserDto,
-  ) {
-    const { title } = addWorkoutDto;
-    const workout = await this.workoutService.createWorkout(
-      user.id,
-      programId,
-      title,
-    );
-    return workout;
-  }
-
-  @Post('workout/:programId')
-  @Permission('create', 'Workouts')
   async createNeWWorkout(
     @Body(new ZodPipe(AddNewWorkoutSchema)) workoutData: AddNewWorkoutDto,
     @Param('programId', ParseIntPipe, ProgramExistsPipe)
     programId: number,
     @RequestUser() user: RequestUserDto,
   ) {
-    const newWorkout = await this.workoutService.createNewWorkout(
+    const newWorkout = await this.workoutService.createWorkoutWithExercises(
       user.id,
       programId,
       workoutData,
     );
-    console.log(newWorkout);
     return newWorkout;
   }
 
