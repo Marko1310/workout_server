@@ -32,6 +32,8 @@ export class ProgramsService {
   async findOne(programId: number) {
     return await this.programRepository.findOne({
       where: { programs_id: programId },
+      relations: ['users'],
+      select: { users: { user_id: true } },
     });
   }
 

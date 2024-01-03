@@ -38,7 +38,7 @@ export class WorkoutsService {
             const exercise = await this.newExercise(
               userId,
               savedWorkout.workouts_id,
-              title,
+              exerciseData.title,
               exerciseData.goalSets,
               exerciseData.goalReps,
             );
