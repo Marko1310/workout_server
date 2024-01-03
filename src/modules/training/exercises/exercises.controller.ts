@@ -52,7 +52,11 @@ export class ExercisesController {
     if (!hasPermission(user.permissions, 'delete', exercise)) {
       throw new ForbiddenException();
     }
-    return await this.exerciseService.deleteExercise(exerciseId);
+    await this.exerciseService.deleteExercise(exerciseId);
+    return {
+      statusCode: 200,
+      message: `Exercise ${exercise.exercise_name} deleted succesfully`,
+    };
   }
 
   @Get(':workoutId')

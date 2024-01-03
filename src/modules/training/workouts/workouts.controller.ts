@@ -54,7 +54,11 @@ export class WorkoutsController {
     if (!hasPermission(user.permissions, 'delete', workout)) {
       throw new ForbiddenException();
     }
-    return await this.workoutService.deleteWorkout(workoutId);
+    await this.workoutService.deleteWorkout(workoutId);
+    return {
+      statusCode: 200,
+      message: `Workout ${workout.workout_name} deleted succesfully`,
+    };
   }
 
   @Get(':userId')

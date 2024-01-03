@@ -48,7 +48,11 @@ export class ProgramsController {
     if (!hasPermission(user.permissions, 'delete', program)) {
       throw new ForbiddenException();
     }
-    return await this.programsService.deleteProgram(programId);
+    await this.programsService.deleteProgram(programId);
+    return {
+      statusCode: 200,
+      message: `Program ${program.programs_name} deleted succesfully`,
+    };
   }
 
   @Get(':userId')
