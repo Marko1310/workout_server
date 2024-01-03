@@ -36,6 +36,8 @@ export class ExercisesService {
   async findOne(exerciseId: number) {
     return await this.exercisesRepository.findOne({
       where: { exercises_id: exerciseId },
+      relations: ['users'],
+      select: { users: { user_id: true } },
     });
   }
 

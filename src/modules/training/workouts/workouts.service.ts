@@ -64,6 +64,8 @@ export class WorkoutsService {
   async findOne(workoutId: number) {
     return await this.workoutsRepository.findOne({
       where: { workouts_id: workoutId },
+      relations: ['users'],
+      select: { users: { user_id: true } },
     });
   }
 
