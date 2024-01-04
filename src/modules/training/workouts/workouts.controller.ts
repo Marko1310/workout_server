@@ -61,10 +61,22 @@ export class WorkoutsController {
     };
   }
 
-  @Get(':userId')
+  @Get()
   @Permission('read', 'Workouts')
-  async getAllWorkouts(@Param('userId') userId: number) {
-    return await this.workoutService.getAllByUserId(userId);
+  async getAllWorkouts(@RequestUser() user: RequestUserDto) {
+    return await this.workoutService.getAllByUserId(user.id);
+  }
+
+  @Get(':workoutId')
+  @Permission('read', 'Workouts')
+  async getWorkoutWithExercises(
+    @Param('workoutId') workoutId: number,
+    @RequestUser() user: RequestUserDto,
+  ) {
+    return await this.workoutService.getWorkoutWithExercises(
+      user.id,
+      workoutId,
+    );
   }
 
   @Get('workoutsForProgram/:userId/:programId')
@@ -82,15 +94,28 @@ export class WorkoutsController {
     return await this.workoutService.getPreviousWorkout(userId);
   }
 
+  //TODO: Remove
   @Get('details/:workoutId/:week')
   @Permission('read', 'Workouts')
-  async getPreviousWorkoutDetails(
+  async getPreviousWorkoutDetails2(
     @Param('workoutId') workoutId: number,
     @Param('week') week: number,
   ) {
     return await this.workoutService.getAllWithExercisesAndSessionsByWeek(
       workoutId,
       week,
+    );
+  }
+
+  @Get('previous/details/:workoutId')
+  @Permission('read', 'Workouts')
+  async getPreviousWorkoutDetails(
+    @Param('workoutId') workoutId: number,
+    @RequestUser() user: RequestUserDto,
+  ) {
+    return await this.workoutService.getPreviousWorkoutWithDetails(
+      workoutId,
+      user.id,
     );
   }
 }

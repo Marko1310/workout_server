@@ -92,6 +92,7 @@ export class WorkoutsService {
     });
   }
 
+  //TODO: Remove
   async getAllWithExercisesAndSessionsByWeek(workoutId: number, week: number) {
     const workoutLogForWeek = await this.workoutLogRepository.findOne({
       where: { workouts: { workouts_id: workoutId }, week: week },
@@ -107,6 +108,37 @@ export class WorkoutsService {
         workoutsLogId,
       })
       .getMany();
+
+    return workout;
+  }
+
+  async getPreviousWorkoutWithDetails(workoutId: number, userId: number) {
+    const previousWorkoutLog = await this.workoutLogRepository.findOne({
+      where: {
+        workouts: { workouts_id: workoutId },
+        users: { user_id: userId },
+      },
+      order: { week: 'DESC' },
+    });
+    console.log(previousWorkoutLog);
+    const workoutsLogId = previousWorkoutLog?.workouts_log_id;
+    const workout = await this.workoutsRepository
+      .createQueryBuilder('workout')
+      .leftJoinAndSelect('workout.exercises', 'exercise')
+      .leftJoinAndSelect('exercise.sessions', 'session')
+      .where('workout.workouts_id = :workoutId', { workoutId })
+      .andWhere('session.workoutsLog.workouts_log_id = :workoutsLogId', {
+        workoutsLogId,
+      })
+      .getOne();
+    return { ...workout, week: previousWorkoutLog?.week };
+  }
+
+  async getWorkoutWithExercises(userId: number, workoutId: number) {
+    const workout = await this.workoutsRepository.findOne({
+      where: { users: { user_id: userId }, workouts_id: workoutId },
+      relations: ['exercises'],
+    });
 
     return workout;
   }
