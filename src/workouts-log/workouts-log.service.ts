@@ -33,6 +33,22 @@ export class WorkoutsLogService {
     });
   }
 
+  async getAllWorkoutLogsByWeek(
+    userId: number,
+    startDate: string,
+    endDate: string,
+  ) {
+    const startDateParsed = new Date(startDate);
+    const endDateParsed = new Date(endDate);
+
+    return await this.workoutsLogRepository.find({
+      where: {
+        users: { user_id: userId },
+        createDateTime: Between(startDateParsed, endDateParsed),
+      },
+    });
+  }
+
   private async findPreviousWeek(workoutId: number) {
     const previousWeek = await this.workoutsLogRepository.findOne({
       where: { workouts: { workouts_id: workoutId } },
