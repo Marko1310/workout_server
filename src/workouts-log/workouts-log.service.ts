@@ -23,11 +23,12 @@ export class WorkoutsLogService {
   }
 
   async getWorkoutLogsCount(userId: number) {
-    return await this.workoutsLogRepository.count({
+    const workoutLogCount = await this.workoutsLogRepository.count({
       where: {
         users: { user_id: userId },
       },
     });
+    return { workoutLogCount };
   }
 
   async getAllWorkoutLogsByYear(userId: number, year: number) {

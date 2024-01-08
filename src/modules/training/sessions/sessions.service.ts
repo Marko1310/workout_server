@@ -11,10 +11,11 @@ export class SessionsService {
     private sessionsRepository: Repository<Sessions>,
   ) {}
 
-  async getSessionsCount(userId: number) {
-    return await this.sessionsRepository.count({
+  async getSetCount(userId: number) {
+    const setCount = await this.sessionsRepository.count({
       where: { users: { user_id: userId } },
     });
+    return { setCount };
   }
 
   async createSession(

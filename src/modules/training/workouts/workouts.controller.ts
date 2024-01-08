@@ -10,12 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
-import {
-  AddWorkoutSchema,
-  AddWorkoutDto,
-  AddNewWorkoutSchema,
-  AddNewWorkoutDto,
-} from './dto/workout.dto';
+import { AddNewWorkoutSchema, AddNewWorkoutDto } from './dto/workout.dto';
 import { ZodPipe } from 'shared/zod.pipe';
 import { ProgramExistsPipe } from '../programs/pipes/programExist.pipe';
 import { WorkoutExistsPipe } from './pipes/workoutExist.pipe';
@@ -67,11 +62,11 @@ export class WorkoutsController {
     return await this.workoutService.getAllByUserId(user.id);
   }
 
-  @Get(':workoutId')
+  @Get('withexercises/:workoutId')
   @Permission('read', 'Workouts')
   async getWorkoutWithExercises(
-    @Param('workoutId') workoutId: number,
     @RequestUser() user: RequestUserDto,
+    @Param('workoutId') workoutId: number,
   ) {
     return await this.workoutService.getWorkoutWithExercises(
       user.id,
@@ -79,19 +74,19 @@ export class WorkoutsController {
     );
   }
 
-  @Get('workoutsForProgram/:userId/:programId')
+  @Get('workoutsForProgram/:programId')
   @Permission('read', 'Workouts')
   async getAllWorkoutsInProgram(
-    @Param('userId') userId: number,
+    @RequestUser() user: RequestUserDto,
     @Param('programId') programId: number,
   ) {
-    return await this.workoutService.getAllForProgram(userId, programId);
+    return await this.workoutService.getAllForProgram(user.id, programId);
   }
 
-  @Get('previous/:userId')
+  @Get('previous')
   @Permission('read', 'Workouts')
-  async getPreviousWorkout(@Param('userId') userId: number) {
-    return await this.workoutService.getPreviousWorkout(userId);
+  async getPreviousWorkout(@RequestUser() user: RequestUserDto) {
+    return await this.workoutService.getPreviousWorkout(user.id);
   }
 
   //TODO: Remove

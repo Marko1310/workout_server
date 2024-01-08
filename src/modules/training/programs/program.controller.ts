@@ -55,15 +55,15 @@ export class ProgramsController {
     };
   }
 
-  @Get(':userId')
+  @Get('all')
   @Permission('read', 'Programs')
-  async getAllPrograms(@Param('userId') userId: number) {
-    return await this.programsService.getAllByUserId(userId);
+  async getAllPrograms(@RequestUser() user: RequestUserDto) {
+    return await this.programsService.getAllByUserId(user.id);
   }
 
-  @Get('currentProgram/:userId')
+  @Get('current')
   @Permission('read', 'Programs')
-  async getCurrentProgram(@Param('userId') userId: number) {
-    return await this.programsService.getCurrentProgram(userId);
+  async getCurrentProgram(@RequestUser() user: RequestUserDto) {
+    return await this.programsService.getCurrentProgram(user.id);
   }
 }

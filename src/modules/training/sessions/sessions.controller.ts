@@ -24,10 +24,10 @@ export class SessionsController {
     private workoutsLogService: WorkoutsLogService,
   ) {}
 
-  @Get('count')
+  @Get('count/sets')
   @Permission('read', 'Sessions')
   async getTotalReps(@RequestUser() user: RequestUserDto) {
-    return this.sessionsService.getTotalReps(user.id);
+    return this.sessionsService.getSetCount(user.id);
   }
 
   @Get('count/weight')
