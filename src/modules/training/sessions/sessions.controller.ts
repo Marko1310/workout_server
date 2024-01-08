@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -22,6 +23,24 @@ export class SessionsController {
     private sessionsService: SessionsService,
     private workoutsLogService: WorkoutsLogService,
   ) {}
+
+  @Get('count')
+  @Permission('read', 'Sessions')
+  async getTotalReps(@RequestUser() user: RequestUserDto) {
+    return this.sessionsService.getTotalReps(user.id);
+  }
+
+  @Get('count/weight')
+  @Permission('read', 'Sessions')
+  async getTotalWeight(@RequestUser() user: RequestUserDto) {
+    return this.sessionsService.getTotalWeight(user.id);
+  }
+
+  @Get('count/reps')
+  @Permission('read', 'Sessions')
+  async getAllSession(@RequestUser() user: RequestUserDto) {
+    return this.sessionsService.getTotalReps(user.id);
+  }
 
   @Post(':workoutId')
   @Permission('create', 'Sessions')

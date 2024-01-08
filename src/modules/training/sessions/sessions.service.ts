@@ -11,6 +11,12 @@ export class SessionsService {
     private sessionsRepository: Repository<Sessions>,
   ) {}
 
+  async getSessionsCount(userId: number) {
+    return await this.sessionsRepository.count({
+      where: { users: { user_id: userId } },
+    });
+  }
+
   async createSession(
     userId: number,
     workoutLogId: number,
@@ -35,6 +41,22 @@ export class SessionsService {
       }
     }
     return createdSessions;
+  }
+
+  async getTotalReps(userId: number) {
+    return await this.sessionsRepository
+      .createQueryBuilder('sessions')
+      .select('SUM(sessions.reps)', 'totalReps')
+      .where('sessions.userId= :userId', { userId })
+      .getRawOne();
+  }
+
+  async getTotalWeight(userId: number) {
+    return await this.sessionsRepository
+      .createQueryBuilder('sessions')
+      .select('SUM(sessions.weight)', 'totalWeight')
+      .where('sessions.userId= :userId', { userId })
+      .getRawOne();
   }
 
   private async createNewSession(

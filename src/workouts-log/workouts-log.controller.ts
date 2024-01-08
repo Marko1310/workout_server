@@ -9,6 +9,12 @@ import { RequestUser } from '@users-modules/decorator/requestUser.decorator';
 export class WorkoutsLogController {
   constructor(private workoutLogsService: WorkoutsLogService) {}
 
+  @Get('count')
+  @Permission('read', 'Workouts')
+  async getAllWorkoutLogs(@RequestUser() user: RequestUserDto) {
+    return await this.workoutLogsService.getWorkoutLogsCount(user.id);
+  }
+
   @Get('year/:year')
   @Permission('read', 'Workouts')
   async getWorkoutLogsByYear(
